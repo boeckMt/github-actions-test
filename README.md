@@ -1,5 +1,15 @@
 # GithubActionsTest
 
+- on push and pull_request to main branch run test and build (Node.js CI)
+
+- on tags run publish (Node.js CI Package)
+
+
+
+
+
+---
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.1.
 
 ## Development server

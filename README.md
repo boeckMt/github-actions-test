@@ -3,6 +3,7 @@
 - on push and pull_request to main branch run test and build (Node.js CI)
 
 - on tags run publish (Node.js CI Package)
+  run npm version <newversion> -m "Version after Milestone XY" (major | minor | patch)
 
 
 

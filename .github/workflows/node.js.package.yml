@@ -21,8 +21,9 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/download-artifact@v2
+    - uses: actions/checkout@v2
     - name: Download dist result from job build
+      uses: actions/download-artifact@v2
       with:
         name: "dist"
         path: dist
@@ -31,3 +32,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: cd ./dist && ls -la
+
+
+

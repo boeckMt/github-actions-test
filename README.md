@@ -24,6 +24,8 @@ https://stackoverflow.com/questions/58862864/github-actions-ci-conditional-regex
 
 https://docs.github.com/en/actions/guides/caching-dependencies-to-speed-up-workflows
 
+https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
+
 ---
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.1.

@@ -5,6 +5,7 @@ on:
     workflows: ["Node.js CI"]
     types:
       - completed
+      - requested
     branches: [main]
   push:
     tags:

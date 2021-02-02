@@ -6,8 +6,18 @@
   run `npm version <newversion> -m "Version after Milestone XY"` (major | minor | patch)
 
 
+- git push origin main --tags
 
 
+
+
+https://github.com/jontreynes/powershell-azfunc-app/blob/20bb025855155c327b7f3650735ec3271b1cf653/.github/workflows/cd.yml
+
+https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idif
+
+https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#github-context
+
+https://docs.github.com/en/actions/reference/events-that-trigger-workflows
 
 ---
 

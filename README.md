@@ -1,6 +1,9 @@
 # GithubActionsTest
 
-- on push and pull_request to main branch run test and build (Node.js CI)
+- workflows:
+  - dev-test: runs on all push events ignores main, tags and *.md files
+  - pre-release: runs only on branches not main and semver tags including -alpha | -beta | -next
+  - main-release: runs only on main and semver tags for no pre-release -> publish only runs for tags 
 
 - on tags run publish (Node.js CI Package)
   run `npm version <newversion> -m "Version after Milestone XY"` (major | minor | patch)

@@ -6,8 +6,6 @@ name: Node.js CI
 on:
   push:
     branches: [ main ]
-    tags:
-      - '*'
   pull_request:
     branches: [ main ]
 
@@ -16,4 +14,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-          echo "${{ toJSON(github) }}"
+          echo "${{ github.event_name }}"
+          echo "${{ github.ref }}"

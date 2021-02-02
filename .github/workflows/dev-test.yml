@@ -11,6 +11,8 @@ on:
     tags-ignore:
       # And do not run for any tags
       - '*'
+    paths-ignore:
+      - '**.md'
 
 jobs:
   event:

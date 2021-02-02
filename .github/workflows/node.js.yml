@@ -15,7 +15,5 @@ jobs:
   event:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: show event
     - run: |
           echo "${{ github.event}}!"

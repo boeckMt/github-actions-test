@@ -4,12 +4,12 @@ on:
     branches: [ main ]
     tags:
     - 'v[0-9]+.[0-9]+.[0-9]+'
-#    - 'v[0-9]+.[0-9]+.[0-9]+-next[0-9]+'
+    - 'v[0-9]+.[0-9]+.[0-9]+-next[0-9]+'
 
 
 jobs:
   event:
-    if: startsWith(github.ref, 'refs/tags')
+    if: startsWith(github.ref, 'refs/tags') && contains(github.ref, '-next')
     runs-on: ubuntu-latest
     steps:
     - run: |

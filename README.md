@@ -4,7 +4,7 @@
 
 - on tags run publish (Node.js CI Package)
   run `npm version <newversion> -m "Version after Milestone XY"` (major | minor | patch)
-
+or run `npm version <0.1.5-beta.0>` for a custom version
 
 - git push origin main --tags
 
@@ -18,6 +18,11 @@ https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#
 https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#github-context
 
 https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+
+
+https://stackoverflow.com/questions/58862864/github-actions-ci-conditional-regex
+
+https://docs.github.com/en/actions/guides/caching-dependencies-to-speed-up-workflows
 
 ---
 

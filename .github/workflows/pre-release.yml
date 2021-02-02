@@ -1,4 +1,4 @@
-name: Filter Tags
+name: Pre Release
 on:
   push:
     branches-ignore:

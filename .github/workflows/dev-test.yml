@@ -20,10 +20,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: |
-          git fetch --all --tags
-          git tag -l --sort=refname v*
-          git ls-remote --tags origin
-          git describe --tags
+          git fetch --prune --all --unshallow --tags
+          git describe --tags `git rev-list --tags --max-count=1`
 
   event:
     runs-on: ubuntu-latest

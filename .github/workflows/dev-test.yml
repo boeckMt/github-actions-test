@@ -15,22 +15,34 @@ on:
       - '**.md'
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "packageVersion= node -p 'require('./package.json').version'"
+        echo $packageVersion
+
+
   checkTags:
+    needs: test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
       with:
         node-version: 14
-      id: check-tag
+      env:
+        latestTag: git describe --tags `git rev-list --tags --max-count=1`
+        packageVersion: node -p "require('./package.json').version"
     - run: |
         git fetch --prune --all --unshallow --tags
-        echo latestTag= git describe --tags `git rev-list --tags --max-count=1`
-        echo packageVersion= node -p "require('./package.json').version"
         if ! contains($latestTag, $packageVersion)
         then
-          exit 1
+          exit 1gi
         fi
+
+#        echo latestTag= git describe --tags `git rev-list --tags --max-count=1`
+#        echo packageVersion= node -p "require('./package.json').version"
 
   event:
     needs: checkTags

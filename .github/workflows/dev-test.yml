@@ -26,18 +26,14 @@ jobs:
         git fetch --prune --all --unshallow --tags
         latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
         packageVersion=$(node -p "require('./package.json').version")
-        echo "${latestTag} - ${packageVersion}"
         if [[ $latestTag == *"$packageVersion"* ]]
         then
-          echo "should be true"
-          echo $packageVersion == *"$latestTag"*
+          echo "${latestTag} - ${packageVersion}"
+          exit 0
         else
-          echo "should be false"
-          echo $packageVersion == *"$latestTag"*
+          echo "${latestTag} - ${packageVersion}"
+          exit 1
         fi
-
-#        echo latestTag= git describe --tags `git rev-list --tags --max-count=1`
-#        echo packageVersion= node -p "require('./package.json').version"
 
   event:
     needs: checkTags

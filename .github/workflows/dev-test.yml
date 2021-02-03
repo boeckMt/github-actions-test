@@ -17,8 +17,6 @@ on:
 jobs:
   checkTags:
     runs-on: ubuntu-latest
-    outputs:
-      tagexists: ${{ steps.check-tag.outputs.never }}
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
@@ -29,13 +27,12 @@ jobs:
         git fetch --prune --all --unshallow --tags
         $ latestTag = git describe --tags `git rev-list --tags --max-count=1`
         $ packageVersion = node -p "require('./package.json').version"
-        if [[contains($latestTag, $packageVersion)]]; then
-              echo ::set-output name=tagexists::true
+        if [[!contains($latestTag, $packageVersion)]]; then
+          exit 1
         fi
 
   event:
     needs: checkTags
-    if: checkTags.outputs.tagexists
     runs-on: ubuntu-latest
     steps:
     - run: |

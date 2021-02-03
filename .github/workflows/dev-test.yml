@@ -24,12 +24,14 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: 14
+    - run: npm ci
     - run: |
         git fetch --prune --all --unshallow --tags
         latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
         packageVersion=$(node -p "require('./package.json').version")
         latestNpmVerion=$(npm show @dlr-eoc/core-ui version)
-        if [ ${latestTag:1} == "$packageVersion" -a $latestNpmVerion == "$packageVersion" ]
+        check=$(npx semver "$packageVersion" "$latestNpmVerion" | head -n 1)
+        if [ ${latestTag:1} == "$packageVersion" -a "$check"  == "$latestNpmVerion" ]
         then
           echo "Tag:${latestTag} - repo:${packageVersion} - npm:${latestNpmVerion}"
           exit 0

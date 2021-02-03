@@ -15,6 +15,17 @@ on:
       - '**.md'
 
 jobs:
+  checkTags:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: get Tags
+      - run: |
+            git fetch --all --tags
+            git tag -l --sort=refname v*
+            git ls-remote --tags origin
+            git describe --tags
+
   event:
     runs-on: ubuntu-latest
     steps:

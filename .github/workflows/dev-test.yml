@@ -27,7 +27,7 @@ jobs:
         latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
         packageVersion=$(node -p "require('./package.json').version")
         echo "${latestTag} - ${packageVersion}"
-        if [[ $packageVersion == *"$latestTag"* ]]
+        if [[ $latestTag == *"$packageVersion"* ]]
         then
           echo "should be true"
           echo $packageVersion == *"$latestTag"*

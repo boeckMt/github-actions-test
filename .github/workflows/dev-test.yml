@@ -17,6 +17,8 @@ on:
 jobs:
   checkTags:
     runs-on: ubuntu-latest
+    outputs:
+      tagexists: ${{ steps.check-tag.outputs.never }}
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
@@ -32,7 +34,8 @@ jobs:
         fi
 
   event:
-    if: checkTags.steps.check-tag.outputs.tagexists == 'true'
+    needs: checkTags
+    if: checkTags.outputs.tagexists
     runs-on: ubuntu-latest
     steps:
     - run: |

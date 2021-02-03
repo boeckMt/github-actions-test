@@ -30,7 +30,7 @@ jobs:
         git fetch --prune --all --unshallow --tags
         latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
         packageVersion=$(node -p "require('./package.json').version")
-        latestNpmVerion=$(npm show env.testpackage version)
+        latestNpmVerion=$(npm show "${{ env.testpackage }}" version)
         if [[ ${latestTag:1} == "$packageVersion" ]]
         then
           echo "Tag:${latestTag} - repo:${packageVersion} - npm:${latestNpmVerion}"

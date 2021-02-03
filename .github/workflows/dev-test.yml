@@ -29,7 +29,7 @@ jobs:
         latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
         packageVersion=$(node -p "require('./package.json').version")
         latestNpmVerion=$(npm show @dlr-eoc/core-ui version)
-        if [[ ${latestTag:1} == "$packageVersion" && $latestNpmVerion == "$packageVersion" ]]
+        if [ ${latestTag:1} == "$packageVersion" -a $latestNpmVerion == "$packageVersion" ]
         then
           echo "Tag:${latestTag} - repo:${packageVersion} - npm:${latestNpmVerion}"
           exit 0

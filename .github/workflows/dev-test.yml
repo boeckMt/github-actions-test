@@ -29,9 +29,11 @@ jobs:
         echo "${latestTag} - ${packageVersion}"
         if [[ $packageVersion == *"$latestTag"* ]]
         then
-          exit 0
+          echo "should be true"
+          echo $packageVersion == *"$latestTag"*
         else
-          exit 1
+          echo "should be false"
+          echo $packageVersion == *"$latestTag"*
         fi
 
 #        echo latestTag= git describe --tags `git rev-list --tags --max-count=1`

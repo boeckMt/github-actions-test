@@ -19,9 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 14
     - run: |
-          git fetch --prune --all --unshallow --tags
-          git describe --tags `git rev-list --tags --max-count=1`
+        git fetch --prune --all --unshallow --tags
+        git describe --tags `git rev-list --tags --max-count=1`
+        node -p "require('./package.json').version"
 
   event:
     runs-on: ubuntu-latest

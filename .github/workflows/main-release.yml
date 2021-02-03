@@ -1,6 +1,8 @@
 name: Main Release
 
-
+# TODO: check run this workflow only if a certain tag exists and there is no npm version for it published
+# git tag -l v0.3.0
+# https://github.com/marketplace/actions/github-tag-check
 on:
   pull_request:
     types: [closed]

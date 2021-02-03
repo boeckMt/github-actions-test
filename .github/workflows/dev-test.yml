@@ -15,6 +15,8 @@ on:
       - '**.md'
 
 jobs:
+  # Check if the latest git Tag is the same as the repo npm version
+  # Check if the repo npm version is higher the the latest version on npm
   checkTags:
     runs-on: ubuntu-latest
     steps:
@@ -22,16 +24,19 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: 14
+      env:
+        testpackage: '@dlr-eoc/core-ui'
     - run: |
         git fetch --prune --all --unshallow --tags
         latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
         packageVersion=$(node -p "require('./package.json').version")
+        latestNpmVerion=$(npm show $testpackage version)
         if [[ $latestTag == *"$packageVersion"* ]]
         then
-          echo "${latestTag} - ${packageVersion}"
+          echo "Tag:${latestTag} - repo:${packageVersion} - npm:${latestNpmVerion}"
           exit 0
         else
-          echo "${latestTag} - ${packageVersion}"
+          echo "Tag:${latestTag} - repo:${packageVersion} - npm:${latestNpmVerion}"
           exit 1
         fi
 

@@ -25,8 +25,8 @@ jobs:
       id: check-tag
     - run: |
         git fetch --prune --all --unshallow --tags
-        latestTag = git describe --tags `git rev-list --tags --max-count=1`
-        packageVersion = node -p "require('./package.json').version"
+        echo latestTag= git describe --tags `git rev-list --tags --max-count=1`
+        echo packageVersion= node -p "require('./package.json').version"
         if ! contains($latestTag, $packageVersion)
         then
           exit 1

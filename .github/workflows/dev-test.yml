@@ -24,14 +24,12 @@ jobs:
     - uses: actions/setup-node@v2
       with:
         node-version: 14
-      env:
-        testpackage: '@dlr-eoc/core-ui'
     - run: |
         git fetch --prune --all --unshallow --tags
         latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
         packageVersion=$(node -p "require('./package.json').version")
-        latestNpmVerion=$(npm show "${{ env.testpackage }}" version)
-        if [[ ${latestTag:1} == "$packageVersion" ]]
+        latestNpmVerion=$(npm show @dlr-eoc/core-ui version)
+        if [[ ${latestTag:1} == "$packageVersion" && $latestNpmVerion == "$packageVersion" ]]
         then
           echo "Tag:${latestTag} - repo:${packageVersion} - npm:${latestNpmVerion}"
           exit 0

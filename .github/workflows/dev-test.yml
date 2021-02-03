@@ -15,16 +15,7 @@ on:
       - '**.md'
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "packageVersion= node -p 'require('./package.json').version'"
-        echo $packageVersion
-
-
   checkTags:
-    needs: test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -36,9 +27,11 @@ jobs:
         packageVersion: node -p "require('./package.json').version"
     - run: |
         git fetch --prune --all --unshallow --tags
-        if ! contains($latestTag, $packageVersion)
+        if [ contains($latestTag, $packageVersion) ]
         then
-          exit 1gi
+          exit 0
+        else
+          exit 1
         fi
 
 #        echo latestTag= git describe --tags `git rev-list --tags --max-count=1`

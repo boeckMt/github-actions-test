@@ -21,7 +21,6 @@ runs:
       env:
         action_path: ${{ github.action_path }}
       run: |
-        path1="${action_path/.\//''}"
-        path2="${path1/\/github-actions-test/''}"
-        "${path2}"/index.sh
+        path="${action_path/.\//''}"
+        "${path}"/index.sh
       shell: bash

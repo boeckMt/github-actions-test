@@ -23,5 +23,5 @@ runs:
       run: |
         echo ${{ github.action_path }}
         echo "$action_path"
-        echo "$action_path/.\//''"
+        echo "${action_path/.\//''}"
       shell: bash

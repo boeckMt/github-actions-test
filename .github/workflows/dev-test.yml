@@ -24,7 +24,7 @@ jobs:
  #         node-version: 14
  #     - run: cd ./scripts/actions/ && npm ci && cd ../../
  #     - uses: ./scripts/actions/check-tag/
-      - uses: ./scripts/actions/composite-run-steps-action/
+      - uses: ./scripts/actions/composite-run-steps-action
         with:
           who-to-greet: "Mona the Octocat"
 

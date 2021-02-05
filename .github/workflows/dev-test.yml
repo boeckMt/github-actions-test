@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ./scripts/actions/check-tag@v1.0
+      - uses: ./scripts/actions/check-tag/
         with:
           who-to-greet: "Mona the Octocat"
 

@@ -10,6 +10,10 @@
     "e2e": "ng e2e"
   },
   "private": true,
+  "workspaces": [
+    "projects/*",
+    "scripts/actions/*"
+  ],
   "dependencies": {
     "@angular/animations": "~11.1.0",
     "@angular/common": "~11.1.0",

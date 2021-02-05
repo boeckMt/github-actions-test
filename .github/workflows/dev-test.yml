@@ -10,41 +10,48 @@ on:
       - main
     tags-ignore:
       # And do not run for any tags
-      - '*'
+      - "*"
     paths-ignore:
-      - '**.md'
+      - "**.md"
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./scripts/actions/check-tag@v1.0
+        with:
+          who-to-greet: "Mona the Octocat"
+
   # Check if the latest git Tag is the same as the repo npm version
   # Check if the repo npm version is higher the the latest version on npm
   checkTags:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: 14
-    - run: npm ci
-    - run: |
-        git fetch --prune --all --unshallow --tags
-        latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
-        packageVersion=$(node -p "require('./package.json').version")
-        testPackage='testPackage'
-        latestNpmVerion=$(npm show "$testPackage" version)
-        check=$(npx semver "$packageVersion" "$latestNpmVerion" | head -n 1)
-        if [ ${latestTag:1} == "$packageVersion" -a "$check"  == "$latestNpmVerion" ]
-        then
-          echo "Tag:${latestTag} - repo:${packageVersion} - npm:${latestNpmVerion}"
-          exit 0
-        else
-          echo "Tag:${latestTag} - repo:${packageVersion} - npm:${latestNpmVerion}"
-          exit 1
-        fi
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - run: npm ci
+      - run: |
+          git fetch --prune --all --unshallow --tags
+          latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          packageVersion=$(node -p "require('./package.json').version")
+          testPackage='testPackage'
+          latestNpmVerion=$(npm show "$testPackage" version)
+          check=$(npx semver "$packageVersion" "$latestNpmVerion" | head -n 1)
+          if [ ${latestTag:1} == "$packageVersion" -a "$check"  == "$latestNpmVerion" ]
+          then
+            echo "Tag:${latestTag} - repo:${packageVersion} - npm:${latestNpmVerion}"
+            exit 0
+          else
+            echo "Tag:${latestTag} - repo:${packageVersion} - npm:${latestNpmVerion}"
+            exit 1
+          fi
 
   event:
     needs: checkTags
     runs-on: ubuntu-latest
     steps:
-    - run: |
+      - run: |
           echo "${{ github.event_name }}"
           echo "${{ github.ref }}"

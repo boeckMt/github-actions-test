@@ -20,10 +20,8 @@ runs:
     - name: Run bash script
       env:
         action_path: ${{ github.action_path }}
-    - run: |
+      run: |
         echo ${{ github.action_path }}
         echo "$action_path"
         echo "$action_path/.\//''"
-
-  #  - run: ${{ github.action_path }}/index.sh
       shell: bash

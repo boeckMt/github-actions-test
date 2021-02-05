@@ -18,5 +18,5 @@ runs:
       run: echo "::set-output name=random-id::$(echo $RANDOM)"
       shell: bash
 #    - run: ${{ github.action_path }}/index.sh
-    - run: /index.sh
+    - run: ./index.sh
       shell: bash

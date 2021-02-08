@@ -16,13 +16,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo Hello ${{ inputs.npmPackageName }}.
-      shell: bash
-    - id: random-number-generator
-      run: echo "::set-output name=random-id::$(echo $RANDOM)"
-      shell: bash
     - run: |
-        echo $GITHUB_ACTION_PATH
+        path="${$GITHUB_ACTION_PATH/.\//''}"
+        echo $path
         echo $PACKAGEPATH
         echo $NPMPACKAGENAME
       shell: bash

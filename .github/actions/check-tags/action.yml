@@ -17,7 +17,7 @@ runs:
   using: "composite"
   steps:
     - run: |
-        path="${$GITHUB_ACTION_PATH/.\//''}"
+        path="${GITHUB_ACTION_PATH/.\//''}"
         echo $path
         echo $PACKAGEPATH
         echo $NPMPACKAGENAME

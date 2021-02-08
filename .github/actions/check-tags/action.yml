@@ -33,6 +33,7 @@ runs:
         latestNpmVerion=0.1.0
 
         if [ "${latestTag:1}" == "$packageVersion" ] && [ "$packageVersion"  != "$latestNpmVerion" ]
+        then
           echo "Tag:${latestTag} - repo:${packageVersion} - npm:${latestNpmVerion}"
         else
           echo "Tag:${latestTag} - repo:${packageVersion} - npm:${latestNpmVerion}"

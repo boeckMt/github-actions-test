@@ -15,12 +15,21 @@ on:
       - "**.md"
 
 jobs:
-  dev-test:
+  test:
     runs-on: ubuntu-latest
     steps:
     # check out before using actions reference from the same repository!
       - uses: actions/checkout@v2
       - uses: ./.github/actions/check-tags
+
+  dev:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/check-tags
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
       - uses: ./.github/actions/build-test
       - name: Archive dist artifacts
         uses: actions/upload-artifact@v2

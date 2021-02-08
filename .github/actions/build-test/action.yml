@@ -4,10 +4,8 @@ description: 'Do a npm build and teat'
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-node@v2
-      with:
-          node-version: 14
     - run: npm ci
+      shell: bash
     - run: npm run test -- --headless
       shell: bash
     - run: npm run build

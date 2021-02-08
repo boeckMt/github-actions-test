@@ -30,12 +30,12 @@ runs:
 
         latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
         reqVersion="require('${{ inputs.packagePath }}').version"
-
+        packageVersion=$(node -p $reqVersion)
 
         latestNpmVerion=0.1.0
 
         echo "$latestNpmVerion"
-        echo "$reqVersion"
+        echo "$packageVersion"
         echo "$latestTag"
 
       shell: bash

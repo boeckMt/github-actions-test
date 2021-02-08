@@ -19,8 +19,8 @@ runs:
     - run: |
         path="${GITHUB_ACTION_PATH/.\//''}"
         echo $path
-        echo $PACKAGEPATH
-        echo $NPMPACKAGENAME
+        echo $INPUT_PACKAGEPATH
+        echo $INPUT_NPMPACKAGENAME
       shell: bash
 
     - run: git fetch --prune --all --unshallow --tags

@@ -20,7 +20,7 @@ runs:
       shell: bash
 
       # Check if the latest git Tag is the same as the repo npm version
-      # Check if the repo npm version is higher the the latest version on npm
+      # Check if the repo npm version is not the same as the latest version on npm (normally it would be better to check if the version is higher but this is more complicated)
     - run: |
         path="${GITHUB_ACTION_PATH/.\//''}"
 

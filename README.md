@@ -31,6 +31,14 @@ https://docs.github.com/en/actions/guides/caching-dependencies-to-speed-up-workf
 
 https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
 
+https://github.com/sdras/awesome-actions
+
+https://docs.github.com/en/actions/creating-actions/creating-a-javascript-action
+
+https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#about-yaml-syntax-for-github-actions
+
+https://docs.github.com/en/actions/learn-github-actions/finding-and-customizing-actions#referencing-an-action-in-the-same-repository-where-a-workflow-file-uses-the-action
+
 ---
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.1.

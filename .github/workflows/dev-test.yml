@@ -10,14 +10,21 @@ on:
       - main
     tags-ignore:
       # And do not run for any tags
-      - '*'
+      - "*"
     paths-ignore:
-      - '**.md'
+      - "**.md"
 
 jobs:
-  event:
+  dev:
     runs-on: ubuntu-latest
     steps:
-    - run: |
-          echo "${{ github.event_name }}"
-          echo "${{ github.ref }}"
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - uses: ./.github/actions/build-test
+#      - name: Archive dist artifacts
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: "dist"
+#          path: dist

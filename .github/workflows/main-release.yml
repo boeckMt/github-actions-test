@@ -1,6 +1,8 @@
 name: Main Release
 
-
+# TODO: check run this workflow only if a certain tag exists and there is no npm version for it published
+# git tag -l v0.3.0
+# https://github.com/marketplace/actions/github-tag-check
 on:
   pull_request:
     types: [closed]
@@ -8,10 +10,24 @@ on:
     - main
 
 jobs:
+  # Check if the latest git Tag is the same as the repo npm version
+  # Check if the repo npm version is higher the the latest version on npm
+  checkTags:
+    runs-on: ubuntu-latest
+    steps:
+    # check out before using actions reference from the same repository!
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/check-tags
+        with:
+          npmPackageVersion: 0.1.0
+
   test:
+    needs: checkTags
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
+    # check out before using actions reference from the same repository!
+      - uses: actions/checkout@v2
       - run: |
           echo "run test"
           echo "${{ github.event_name }}"
@@ -21,6 +37,8 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
+    # check out before using actions reference from the same repository!
+      - uses: actions/checkout@v2
       - run: |
           echo "run build"
 

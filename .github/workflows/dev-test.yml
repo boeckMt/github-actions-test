@@ -20,9 +20,18 @@ jobs:
     steps:
     # check out before using actions reference from the same repository!
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/check-tags
-        with:
-          npmPackageVersion: 0.1.0
+      - uses: ./.github/actions/build-test
+
+
+
+#  check-tags:
+#    runs-on: ubuntu-latest
+#    steps:
+#    # check out before using actions reference from the same repository!
+#      - uses: actions/checkout@v2
+#      - uses: ./.github/actions/check-tags
+#        with:
+#          npmPackageVersion: 0.1.0
 
 #  dev:
 #    needs: test

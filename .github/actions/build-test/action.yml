@@ -6,7 +6,7 @@ runs:
   steps:
     - run: npm ci
       shell: bash
-    - run: npm run test -- --browsers=ChromeHeadless
+    - run: npm run test -- --watch=false --browsers=ChromeHeadless
       shell: bash
     - run: npm run build
       shell: bash

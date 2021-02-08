@@ -1,0 +1,31 @@
+# Check if the latest git Tag is the same as the repo npm version
+# Check if the repo npm version is higher the the latest version on npm
+
+name: 'Check Tags'
+description: 'Check git tag and npm version for a repository to prevent wrong publications.'
+inputs:
+  npmPackageName:  # id of input
+    description: 'The npm package to get the latest version from the npm registry.'
+    required: false
+    default: '@dlr-eoc/core-ui'
+  packagePath:
+    description: 'The path to the package.json in the repository.'
+    required: false
+    default: './package.json'
+
+runs:
+  using: "composite"
+  steps:
+    - run: echo Hello ${{ inputs.npmPackageName }}.
+      shell: bash
+    - id: random-number-generator
+      run: echo "::set-output name=random-id::$(echo $RANDOM)"
+      shell: bash
+    - run: |
+        echo $GITHUB_ACTION_PATH
+        echo $PACKAGEPATH
+        echo $NPMPACKAGENAME
+      shell: bash
+
+    - run: git fetch --prune --all --unshallow --tags
+      shell: bash

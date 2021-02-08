@@ -31,6 +31,10 @@ https://docs.github.com/en/actions/guides/caching-dependencies-to-speed-up-workf
 
 https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
 
+https://github.com/sdras/awesome-actions
+
+https://docs.github.com/en/actions/creating-actions/creating-a-javascript-action
+
 ---
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.1.

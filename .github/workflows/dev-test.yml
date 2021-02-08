@@ -15,33 +15,14 @@ on:
       - "**.md"
 
 jobs:
-  test:
+  dev:
     runs-on: ubuntu-latest
     steps:
-    # check out before using actions reference from the same repository!
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
       - uses: ./.github/actions/build-test
-
-
-
-#  check-tags:
-#    runs-on: ubuntu-latest
-#    steps:
-#    # check out before using actions reference from the same repository!
-#      - uses: actions/checkout@v2
-#      - uses: ./.github/actions/check-tags
-#        with:
-#          npmPackageVersion: 0.1.0
-
-#  dev:
-#    needs: test
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - uses: actions/setup-node@v2
-#        with:
-#          node-version: 14
-#      - uses: ./.github/actions/build-test
 #      - name: Archive dist artifacts
 #        uses: actions/upload-artifact@v2
 #        with:

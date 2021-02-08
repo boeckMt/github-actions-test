@@ -18,5 +18,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+    # check out before using actions reference from the same repository!
       - uses: actions/checkout@v2
       - uses: ./.github/actions/check-tags
+      - uses: ./.github/actions/build-test
+      - name: Archive dist artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: "dist"
+          path: dist

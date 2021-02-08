@@ -29,7 +29,7 @@ runs:
         echo "$INPUT_NPMPACKAGENAME"
 
         latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
-        reqVersion="require(${{ inputs.packagePath }}).version"
+        reqVersion="require('${{ inputs.packagePath }}').version"
 
 
         latestNpmVerion=0.1.0

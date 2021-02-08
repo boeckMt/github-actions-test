@@ -23,9 +23,6 @@ runs:
       # Check if the repo npm version is higher the the latest version on npm
     - run: |
         path="${GITHUB_ACTION_PATH/.\//''}"
-        echo "$path"
-        echo "$INPUT_PACKAGEPATH"
-        echo "$NPMPACKAGENAME"
 
         latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
 
@@ -37,18 +34,16 @@ runs:
 
         if [ "${{ inputs.npmPackageVersion }}" ]
         then
-          echo "${{ inputs.npmPackageName }}"
-          echo "$packageName"
           latestNpmVerion="${{ inputs.npmPackageVersion }}"
         fi
 
 
         if [ "${latestTag:1}" == "$packageVersion" ] && [ "$packageVersion"  != "$latestNpmVerion" ]
         then
-          echo "Tag:${latestTag} - repo:${packageVersion} - npm:${latestNpmVerion}"
+          echo "Tag:${latestTag} == repo:${packageVersion} && repo:${packageVersion} != npm:${latestNpmVerion}"
           exit 0
         else
-          echo "Tag:${latestTag} - repo:${packageVersion} - npm:${latestNpmVerion}"
+          echo "Tag:${latestTag} ?== repo:${packageVersion} && repo:${packageVersion} ?== npm:${latestNpmVerion}"
           exit 1
         fi
 

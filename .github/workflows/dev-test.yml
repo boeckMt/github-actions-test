@@ -21,6 +21,8 @@ jobs:
     # check out before using actions reference from the same repository!
       - uses: actions/checkout@v2
       - uses: ./.github/actions/check-tags
+        with:
+          npmPackageVersion: 0.1.0
 
 #  dev:
 #    needs: test

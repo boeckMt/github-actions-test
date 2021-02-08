@@ -35,7 +35,7 @@ runs:
         latestNpmVerion=0.1.0
 
         echo "$latestNpmVerion"
-        echo "reqVersion"
+        echo "$reqVersion"
         echo "$latestTag"
 
       shell: bash

@@ -1,6 +1,3 @@
-# Check if the latest git Tag is the same as the repo npm version
-# Check if the repo npm version is higher the the latest version on npm
-
 name: "Check Tags"
 description: "Check git tag and npm version for a repository to prevent wrong publications."
 inputs:
@@ -19,9 +16,10 @@ runs:
     - run: git fetch --prune --all --unshallow --tags
       shell: bash
 
-
       #       testPackage='testPackage'
       #       latestNpmVerion=$(npm show "$testPackage" version)
+      # Check if the latest git Tag is the same as the repo npm version
+      # Check if the repo npm version is higher the the latest version on npm
     - run: |
         path="${GITHUB_ACTION_PATH/.\//''}"
         echo "$path"
@@ -34,8 +32,10 @@ runs:
 
         latestNpmVerion=0.1.0
 
-        echo "$latestNpmVerion"
-        echo "$packageVersion"
-        echo "$latestTag"
+        if [ "${latestTag:1}" == "$packageVersion" ] && [ "$packageVersion"  != "$latestNpmVerion" ]
+          echo "Tag:${latestTag} - repo:${packageVersion} - npm:${latestNpmVerion}"
+        else
+          echo "Tag:${latestTag} - repo:${packageVersion} - npm:${latestNpmVerion}"
+        fi
 
       shell: bash

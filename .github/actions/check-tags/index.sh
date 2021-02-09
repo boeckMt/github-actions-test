@@ -5,12 +5,13 @@
 
 latestTag=$(git describe --tags "$(git rev-list --tags --max-count=1)")
 
-reqVersion="require('$PACKAGEPATH').version"
+reqVersion="require('$PACKAGE_PATH').version"
 packageVersion=$(node -p $reqVersion)
 
 echo "$latestTag"
-echo "$NPMPACKAGENAME"
-echo "$PACKAGEPATH"
+echo "$NPM_PACKAGE_NAME"
+echo "$PACKAGE_PATH"
+echo "$NPM_PACKAGE_VERSION"
 echo "$packageVersion"
 
 

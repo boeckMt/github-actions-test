@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Usage
 # chmod +x index.sh or git update-index --chmod=+x index.sh

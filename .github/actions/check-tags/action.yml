@@ -26,11 +26,3 @@ runs:
         PACKAGE_PATH: ${{ inputs.packagePath }}
         NPM_PACKAGE_NAME: ${{ inputs.npmPackageName }}
         NPM_PACKAGE_VERSION: ${{ inputs.npmPackageVersion }}
-      # Check if the latest git Tag is the same as the repo npm version
-      # Check if the repo npm version is not the same as the latest version on npm (normally it would be better to check if the version is higher but this is more complicated)
-#    - name: Version test script
-#      env:
-#        action_path: ${{ github.action_path }}
-#      run: path="${action_path/.\//''}"
-#        "${path}"/index.sh
-#      shell: bash

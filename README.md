@@ -1,43 +1,43 @@
 # GithubActionsTest
 
-- workflows:
+## workflows:
   - dev-test: runs on all push events ignores main, tags and *.md files
-  - pre-release: runs only on branches not main and semver tags including -alpha | -beta | -next
-  - main-release: runs only pull_request merged to branch main
+  - pre-release: runs only on semver tags including -alpha | -beta | -next if check-tags action works and ignores all branches
+  - main-release: runs only pull_request merged to branch main and if check-tags action works
 
-- on tags run publish (Node.js CI Package)
-  run `npm version <newversion> -m "Version after Milestone XY"` (major | minor | patch)
-or run `npm version <0.1.5-beta.0>` for a custom version
-
-- `git push origin main --tags`
-
-- `git checkout -b release-<v*.*.*>`
+## actions: ([composite run steps action](https://docs.github.com/en/actions/creating-actions/creating-a-composite-run-steps-action))
+  - build-test: npm run test and npm run buld // you need to use actions/setup-node@v2 before in your workflow because `uses:` is [currently not allowed](https://github.com/actions/runner/issues/646#issuecomment-777325191) in composite actions
+  - check-tags: checks git tag and npm version for a repository to prevent wrong publications.
 
 
+## trigger workflows
+- dev-test: 
+  - `git push origin <branch>`
+
+- pre-release: `git push origin --tags`
+  - before run `npm version <newversion> -m ""` (major | minor | patch) or run `npm version <0.1.5-beta.0>` for a custom version
+
+- main-release: on pull request
+  - `git checkout -b release-<v*.*.*>`
+  - ... code and wait for pull request review
+  - shortly before the pull request will be merged `git push origin --tags`
 
 
-https://github.com/jontreynes/powershell-azfunc-app/blob/20bb025855155c327b7f3650735ec3271b1cf653/.github/workflows/cd.yml
+## Links
+- https://github.com/jontreynes/powershell-azfunc-app/blob/20bb025855155c327b7f3650735ec3271b1cf653/.github/workflows/cd.yml
+- https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idif
+- https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#github-context
+- https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+- https://stackoverflow.com/questions/58862864/github-actions-ci-conditional-regex
+- https://docs.github.com/en/actions/guides/caching-dependencies-to-speed-up-workflows
+- https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
+- https://github.com/sdras/awesome-actions
+- https://docs.github.com/en/actions/creating-actions/creating-a-javascript-action
+- https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#about-yaml-syntax-for-github-actions
+- https://docs.github.com/en/actions/learn-github-actions/finding-and-customizing-actions#referencing-an-action-in-the-same-repository-where-a-workflow-file-uses-the-action
 
-https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idif
-
-https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#github-context
-
-https://docs.github.com/en/actions/reference/events-that-trigger-workflows
 
 
-https://stackoverflow.com/questions/58862864/github-actions-ci-conditional-regex
-
-https://docs.github.com/en/actions/guides/caching-dependencies-to-speed-up-workflows
-
-https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
-
-https://github.com/sdras/awesome-actions
-
-https://docs.github.com/en/actions/creating-actions/creating-a-javascript-action
-
-https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#about-yaml-syntax-for-github-actions
-
-https://docs.github.com/en/actions/learn-github-actions/finding-and-customizing-actions#referencing-an-action-in-the-same-repository-where-a-workflow-file-uses-the-action
 
 ---
 

@@ -13,13 +13,25 @@
 # get versions from npm registry
 npmTagsStrOrig="$(npm show "$NPM_PACKAGE_NAME" versions)"
 npmTagsStr="$(printf "%s" "$npmTagsStrOrig" | sed -e "s/'//g; s/\[//g; s/\]//g; s/ //g")"
+if [ ! "${npmTagsStrOrig}" ];then
+  echo "no npm tag:${npmTagsStrOrig}"
+  exit 1
+fi
 
 # get versions from git
 latestTagOrig=$(git describe --tags "$(git rev-list --tags --max-count=1)")
 latestTag="$(printf "%s" "$latestTagOrig" | sed -e "s/v//g")"
+if [ ! "${latestTagOrig}" ];then
+  echo "no git tag:${latestTagOrig}"
+  exit 1
+fi
 
 # get version from repo
 repoNpmVersion=$(node -p "require('$PACKAGE_PATH').version")
+if [ ! "${repoNpmVersion}" ];then
+  echo "no repo version:${repoNpmVersion}"
+  exit 1
+fi
 
 if [ "$NPM_PACKAGE_TAGS" ]
 then

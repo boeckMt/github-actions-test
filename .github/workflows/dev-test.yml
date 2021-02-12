@@ -20,6 +20,10 @@ jobs:
     steps:
       # check out before using actions reference from the same repository!
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - run: ls -la
       - uses: ./.github/actions/check-tags
         with:
           npmPackageName: "@dlr-eoc/core-ui"

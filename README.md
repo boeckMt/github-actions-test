@@ -15,7 +15,7 @@
   - `git push origin <branch>`
 
 - pre-release: `git push origin --tags`
-  - before run `npm version <newversion> -m ""` (major | minor | patch) or run `npm version <0.1.5-beta.0>` for a custom version
+  - before run `npm version prerelease --preid=<next.1> -m ""` (major | minor | patch) or run `npm version <0.1.5-beta.0>` for a custom version
 
 - main-release: on pull request
   - `git checkout -b release-<v*.*.*>`

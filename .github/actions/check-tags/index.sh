@@ -43,7 +43,7 @@ IFS="," read -r -a npmTags <<< "$npmTagsStr"
 
 # check if commit/tag is in remote master branch
 # befor run git remote prune github
-commitInMainBranch="git branch -r --contains $(git rev-parse "$latestTag") | grep 'origin/main'"
+commitInMainBranch="git remote prune  && git branch -r --contains $(git rev-parse "$latestTag") | grep 'origin/main'"
 if [ ! "$commitInMainBranch" ];then
   echo "$commitInMainBranch"
   exit 1

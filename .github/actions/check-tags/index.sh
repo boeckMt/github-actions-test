@@ -7,8 +7,8 @@
 # Usage
 # chmod +x index.sh or git update-index --chmod=+x index.sh
 #PACKAGE_PATH="./package.json"
-#NPM_PACKAGE_NAME="@dlr-eoc/core-ui"
 #NPM_PACKAGE_TAGS="0.3.0,0.3.0-alpha.1,0.3.0-next,1.0.0-alpha"
+#NPM_PACKAGE_NAME="@dlr-eoc/core-ui"
 
 # get versions from npm registry
 npmTagsStrOrig="$(npm show "$NPM_PACKAGE_NAME" versions)"
@@ -43,9 +43,14 @@ IFS="," read -r -a npmTags <<< "$npmTagsStr"
 
 # check if commit/tag is in remote master branch
 # befor run git remote prune github
-commitInMainBranch="git branch -r --contains $(git rev-parse "$latestTag") | grep 'origin/main'"
+mainBranch="origin/main"
+remoteBranchContains="$(git branch -r --contains "$(git rev-parse v"$latestTag")" )"
+commitInMainBranch="$(printf "%s" "$remoteBranchContains" | grep "$mainBranch")"
+# echo "$remoteBranchContains"
+# echo "in main $commitInMainBranch"
+
 if [ ! "$commitInMainBranch" ];then
-  echo "$commitInMainBranch"
+  echo "v${latestTag} not in ${mainBranch}"
   exit 1
 fi
 

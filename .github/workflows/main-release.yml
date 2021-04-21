@@ -30,7 +30,7 @@ jobs:
 
   test:
     needs: checkTags
-    if: github.event.pull_request.merged == true || git branch --contains $(git rev-parse GITHUB_REF:10) | grep '^github/master$'
+    if: github.event.pull_request.merged == true || github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       # check out before using actions reference from the same repository!

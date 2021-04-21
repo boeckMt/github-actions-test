@@ -41,18 +41,6 @@ fi
 # create array from npm Tags
 IFS="," read -r -a npmTags <<< "$npmTagsStr"
 
-# check if commit/tag is in remote master branch
-# befor run git remote prune github
-mainBranch="origin/main"
-remoteBranchContains="$(git branch -r --contains "$(git rev-parse v"$latestTag")" )"
-commitInMainBranch="$(printf "%s" "$remoteBranchContains" | grep "$mainBranch")"
-# echo "$remoteBranchContains"
-# echo "in main $commitInMainBranch"
-
-if [ ! "$commitInMainBranch" ];then
-  echo "v${latestTag} not in ${mainBranch}"
-  exit 1
-fi
 
 if [ "${latestTag}" != "$repoNpmVersion" ];then
   echo "git tag:${latestTag} !== repo:${repoNpmVersion}"

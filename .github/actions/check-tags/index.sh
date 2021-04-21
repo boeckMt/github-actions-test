@@ -6,9 +6,9 @@
 
 # Usage
 # chmod +x index.sh or git update-index --chmod=+x index.sh
-PACKAGE_PATH="./package.json"
+#PACKAGE_PATH="./package.json"
+#NPM_PACKAGE_TAGS="0.3.0,0.3.0-alpha.1,0.3.0-next,1.0.0-alpha"
 #NPM_PACKAGE_NAME="@dlr-eoc/core-ui"
-NPM_PACKAGE_TAGS="0.3.0,0.3.0-alpha.1,0.3.0-next,1.0.0-alpha"
 
 # get versions from npm registry
 npmTagsStrOrig="$(npm show "$NPM_PACKAGE_NAME" versions)"

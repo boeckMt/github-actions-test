@@ -11,7 +11,7 @@
 
 
 ## set version
-`version <newversion> -m "..." (major | minor | patch)``
+`npm version <newversion> -m "..." (major | minor | patch)``
 
 ## trigger workflows
 - dev-test: 

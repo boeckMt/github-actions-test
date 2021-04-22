@@ -1,0 +1,32 @@
+name: Check Tag for publish
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]"
+
+jobs:
+  checkTagInMain:
+    runs-on: ubuntu-latest
+    steps:
+      # check out before using actions reference from the same repository!
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - uses: ./.github/actions/check-branch-contains
+        with:
+          branch: "origin/main"
+          commitId: "${{ github.ref }}"
+  checkTagOnNpm:
+    runs-on: ubuntu-latest
+    steps:
+      # check out before using actions reference from the same repository!
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - uses: ./.github/actions/check-tag-on-npm
+        with:
+          npmPackageName: "@dlr-eoc/core-ui"
+          tag: "v7.2.0"

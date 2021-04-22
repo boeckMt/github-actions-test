@@ -22,9 +22,9 @@
   - ... code and wait for pull request review
   - shortly before the pull request will be merged `git push origin --tags`
 
-or if pull request is closed
-- main-release: on push
+- check-tag: on push tags
   - `git push origin --tags`
+
 ## Links
 - https://github.com/jontreynes/powershell-azfunc-app/blob/20bb025855155c327b7f3650735ec3271b1cf653/.github/workflows/cd.yml
 - https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idif

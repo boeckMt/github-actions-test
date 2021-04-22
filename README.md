@@ -10,6 +10,9 @@
   - check-tags: checks git tag and npm version for a repository to prevent wrong publications.
 
 
+## set version
+`version <newversion> -m "..." (major | minor | patch)``
+
 ## trigger workflows
 - dev-test: 
   - `git push origin <branch>`

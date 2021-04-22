@@ -16,6 +16,8 @@ if [ ! "$TAG" ];then
   exit 1
 fi
 
+echo "tag:${TAG}"
+
 # get latest version for a package: npm show <package> version
 # get all versions published: npm show <package> versions
 npmTagsList="$(npm show "$NPM_PACKAGE_NAME" versions)"
@@ -36,3 +38,4 @@ for item in "${npmTags[@]}"; do
     fi
 done
 
+echo "tag:${TAG}  not on npm"

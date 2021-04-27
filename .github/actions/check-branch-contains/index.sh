@@ -32,6 +32,8 @@ else
   COMMITID=$(printf "%s" "$COMMITID" | sed 's/refs\///g; s/tags\///g;')
 fi
 
+echo "tag to check:${COMMITID}"
+
 
 
 # Check if commit/tag is in main remote branch
@@ -44,5 +46,7 @@ commitInBranch="$(printf "%s" "$branchesWhichContain" | grep "$BRANCH")"
 if [ ! "$commitInBranch" ];then
   echo "${COMMITID} not in ${BRANCH}"
   exit 1
+else
+  echo "${COMMITID} is in ${BRANCH}"
+  exit 0
 fi
-

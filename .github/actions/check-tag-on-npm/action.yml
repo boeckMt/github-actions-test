@@ -5,6 +5,9 @@ inputs:
     description: "The npm package to get the latest version from the npm registry."
     required: false
     default: "@dlr-eoc/core-ui"
+  npmPackageTags:
+    description: "A List of tags. Use this instead of npmPackageName if you can't get the tags from the package."
+    required: false
   tag:
     description: "The Tag which should be published on npm"
     required: true
@@ -20,4 +23,5 @@ runs:
       shell: bash
       env:
         NPM_PACKAGE_NAME: ${{ inputs.npmPackageName }}
+        NPM_PACKAGE_TAGS: ${{ inputs.npmPackageTags }}
         TAG: ${{ inputs.tag }}

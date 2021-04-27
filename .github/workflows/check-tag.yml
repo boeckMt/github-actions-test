@@ -29,5 +29,5 @@ jobs:
       - run: rm -f .npmrc
       - uses: ./.github/actions/check-tag-on-npm
         with:
-          npmPackageName: "@dlr-eoc/core-ui"
-          tag: "v7.2.0"
+          npmPackageTags: "v0.4.0-next.1 , v0.4.0-next.2 , v0.9.0, v1.0.0, v1.0.1, v1.0.2, v1.0.3"
+          tag: "${{ github.ref }}"

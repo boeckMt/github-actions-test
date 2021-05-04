@@ -5,12 +5,24 @@ on:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]"
   workflow_dispatch:
+    inputs:
+      ref:
+        description: 'github.ref'
+        required: false
 
 jobs:
-  logevent:
+  logevent1:
+    if: ${{ github.event.inputs.ref }}
+    runs-on: ubuntu-latest
+    steps:
+    - run: "${{ github.ref = github.event.inputs.ref }}"
+    - run: |
+        echo "${{ github.ref }}"
+        echo "${{ toJSON(github.event) }}!"
+  logevent2:
     runs-on: ubuntu-latest
     steps:
     - run: |
         echo "${{ github.event_name }}"
         echo "${{ github.ref }}"
-        echo "${{ github.event }}!"
+        echo "${{ toJSON(github.event) }}!"

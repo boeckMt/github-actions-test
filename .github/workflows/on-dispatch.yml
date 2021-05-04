@@ -1,0 +1,16 @@
+name: On workflow dispatch
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]"
+  workflow_dispatch:
+
+jobs:
+  logevent:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "${{ github.event_name }}"
+        echo "${{ github.ref }}"
+        echo "${{ github.event }}!"

@@ -15,11 +15,12 @@ jobs:
     if: ${{ github.event.inputs.ref }}
     runs-on: ubuntu-latest
     steps:
-    - run: "${{ github.ref = github.event.inputs.ref }}"
     - run: |
         echo "${{ github.ref }}"
+        echo "${{ github.event.inputs.ref }}"
         echo "${{ toJSON(github.event) }}!"
   logevent2:
+    if: ${{ !github.event.inputs }}
     runs-on: ubuntu-latest
     steps:
     - run: |

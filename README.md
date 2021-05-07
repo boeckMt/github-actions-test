@@ -41,6 +41,8 @@
 - https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#about-yaml-syntax-for-github-actions
 - https://docs.github.com/en/actions/learn-github-actions/finding-and-customizing-actions#referencing-an-action-in-the-same-repository-where-a-workflow-file-uses-the-action
 
+- https://github.com/github/docs/tree/main/.github/workflows
+
 
 
 

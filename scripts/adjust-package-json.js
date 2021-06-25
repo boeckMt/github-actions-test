@@ -11,7 +11,7 @@ module.exports = ({ github, context }) => {
       if (jsonString) {
         const jsonObj = JSON.parse(jsonString);
         jsonObj.scripts = {
-          "testexit": "exit 0"
+          "testexit": "exit 1"
         };
         const content = jsonObj;
         FS.writeFile(path, JSON.stringify(content), err => {

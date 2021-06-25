@@ -19,7 +19,6 @@ jobs:
         id: adjust-package
         with:
           script: |
-            script: |
             const script = require('./scripts/adjust-package-json.js');
             script({github, context});
 

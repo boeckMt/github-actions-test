@@ -11,7 +11,7 @@ module.exports = ({ github, context }) => {
       if (jsonString) {
         const jsonObj = JSON.parse(jsonString);
         jsonObj.scripts = {
-          "testexit": "node --eval \"console.error('ERROR: this should fail the job!!! \\n')\" && exit 1"
+          "testexit": "node --eval \"console.error('ERROR: this should fail the job!!! \\n')\" && source exit 1"
         };
         const content = jsonObj;
         FS.writeFile(path, JSON.stringify(content), err => {

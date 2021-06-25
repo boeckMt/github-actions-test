@@ -41,4 +41,10 @@ jobs:
         with:
           node-version: 14
  #     - run: cd ./dist/test-lib && npm run testexit;
-      - run: find ./dist -mindepth 1 -maxdepth 1 -type d -exec bash -c "cd '{}' && npm run testexit" \;
+ #     - run: find ./dist -mindepth 1 -maxdepth 1 -type d -exec bash -c "cd '{}' && npm run testexit" \;
+      - run: |
+          set -o extendedglob
+          ret=0
+          for dir (./**/**) {
+            cd $dir && npm run testexit || ret=$?
+          }

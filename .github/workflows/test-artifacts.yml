@@ -41,4 +41,3 @@ jobs:
         with:
           node-version: 14
       - run: cd ./dist/test-lib && npm run testexit;
-      - run: exit 1";

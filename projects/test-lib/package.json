@@ -8,5 +8,8 @@
   },
   "dependencies": {
     "tslib": "^2.0.0"
+  },
+  "scripts": {
+    "testexit": "node --eval \"console.error('ERROR: this should fail the job!!! \\n')\" && exit 1"
   }
 }

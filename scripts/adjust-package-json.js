@@ -11,16 +11,22 @@ module.exports = ({ github, context }) => {
   });
 
   updateJson(path2, (jsonObj) => {
-    jsonObj.scripts = {
+    /* jsonObj.scripts = {
       "testexit": "node --eval \"console.error('ERROR: exit not working with && ??.\\n')\" && exit 1"
+    }; */
+    jsonObj.scripts = {
+      "testexit": "node --eval \"console.log('test script should not exit process.\\n')\""
     };
     return jsonObj;
   });
 
 
   updateJson(path3, (jsonObj) => {
-    jsonObj.scripts = {
+    /* jsonObj.scripts = {
       "testexit": "node --eval \"console.log('test script should not be executed.\\n')\""
+    }; */
+    jsonObj.scripts = {
+      "testexit": "node --eval \"console.log('test script should not exit process.\\n')\""
     };
     return jsonObj;
   });

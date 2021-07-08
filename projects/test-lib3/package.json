@@ -1,5 +1,5 @@
 {
-  "name": "test-lib2",
+  "name": "test-lib3",
   "version": "0.0.1",
   "main": "src/public-api",
   "peerDependencies": {
@@ -7,6 +7,6 @@
     "@angular/core": "^12.1.1"
   },
   "dependencies": {
-    "tslib": "^2.0.0"
+    "tslib": "^2.2.0"
   }
 }

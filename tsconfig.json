@@ -28,6 +28,10 @@
       "test-lib2": [
         "dist/test-lib2/test-lib2",
         "dist/test-lib2"
+      ],
+      "test-lib3": [
+        "dist/test-lib3/test-lib3",
+        "dist/test-lib3"
       ]
     }
   },

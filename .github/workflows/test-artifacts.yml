@@ -48,7 +48,7 @@ jobs:
           for dir in ./dist/*/     # list directories in the form "/tmp/dirname/"
           do
               dir=${dir%*/}
-              node ./scripts/update-package.js --path=/dist/"$dir"
+              node ./scripts/update-package.js --path="$dir"
           done
 
   #    - run: |

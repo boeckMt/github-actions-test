@@ -42,12 +42,16 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14
-      #     - run: cd ./dist/test-lib && npm run testexit;
-      # when using find the exit codes of the command(s)/subshells executed by it are naturally discarded, as they are not passed to the "main script".
-      #     - run: find ./dist -mindepth 1 -maxdepth 1 -type d -exec bash -c "cd '{}' && npm run testexit" \;
       - run: |
           for dir in ./dist/*/     # list directories in the form "/tmp/dirname/"
           do
               dir=${dir%*/}
-              cd "$dir" && npm run testexit && cd ../..
+              ./scripts/update-package.js --path=/dist/"$dir"
           done
+
+  #    - run: |
+  #        for dir in ./dist/*/     # list directories in the form "/tmp/dirname/"
+  #        do
+  #            dir=${dir%*/}
+  #            cd "$dir" && npm run testexit && cd ../..
+  #        done

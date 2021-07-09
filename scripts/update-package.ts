@@ -26,7 +26,6 @@ if (argv.path) {
 }
 const repositoryUrl = `git+https://github.com/${process.env.GITHUB_REPOSITORY}.git`;
 
-
 function updateJson(path, cb) {
   FS.readFile(path, 'utf8', (error, jsonString) => {
     if (error) {
@@ -51,6 +50,7 @@ function updateJson(path, cb) {
   });
 }
 
+console.log(packagePath);
 updateJson(packagePath, (json) => {
   if (!json.repository) {
     json.repository = {};

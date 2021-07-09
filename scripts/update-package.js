@@ -47,6 +47,7 @@ function updateJson(path, cb) {
         }
     });
 }
+console.log(packagePath);
 updateJson(packagePath, (json) => {
     if (!json.repository) {
         json.repository = {};

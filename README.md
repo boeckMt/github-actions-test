@@ -28,6 +28,19 @@
 - check-tag: on push tags
   - `git push origin --tags`
 
+- gh-pages: on push branch main
+  - build ng app and deploys dist/test-app as pages
+
+- github-script-test: on push branch main
+  - test for actions/github-script
+
+- on-dispatch: on push tags or workflow_dispatch with input refs/tags/< version >
+  - test github.ref vs. github.event.inputs.ref
+
+- test-artifacts: on workflow_dispatch 
+  - test adjust build artifacts
+
+  
 ## Links
 - https://github.com/jontreynes/powershell-azfunc-app/blob/20bb025855155c327b7f3650735ec3271b1cf653/.github/workflows/cd.yml
 - https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idif

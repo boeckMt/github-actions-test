@@ -40,7 +40,8 @@
 - test-artifacts: on workflow_dispatch 
   - test adjust build artifacts
 
-  
+- test-setup-node: on push main
+  - test node and npm versions 
 ## Links
 - https://github.com/jontreynes/powershell-azfunc-app/blob/20bb025855155c327b7f3650735ec3271b1cf653/.github/workflows/cd.yml
 - https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idif

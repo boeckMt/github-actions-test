@@ -23,7 +23,12 @@ jobs:
           script: |
             const script = require('./scripts/adjust-package-json.js');
             script({github, context});
-
+      - run: |
+          for dir in ./dist/*/
+          do
+              dir=${dir%*/}
+              ls "$dir" -la
+          done
       - name: Archive dist artifacts
         uses: actions/upload-artifact@v2
         with:

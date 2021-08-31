@@ -66,3 +66,13 @@ jobs:
     steps:
       - run: |
           echo "run publish-npm"
+
+  # Test create Release on tag push https://github.com/softprops/action-gh-release
+  gh-release:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          prerelease: true

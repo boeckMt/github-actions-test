@@ -31,6 +31,8 @@ jobs:
         echo "${{ github.head_ref }}"
         echo "${{ github.ref_type }}"
         echo "${{ github.workspace }}"
+        echo "--------------------------------------------"
+        echo "${{ toJSON(github.event) }}"
 
   logeventRelease:
     needs: checkEvent

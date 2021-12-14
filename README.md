@@ -59,6 +59,10 @@
 
 
 
+## Trigger workflow 
+- on: pull_request
+- if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release-')
+.github\workflows\on-pr-head-ref-release.yml
 
 ---
 

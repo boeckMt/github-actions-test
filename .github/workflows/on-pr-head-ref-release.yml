@@ -5,50 +5,48 @@ name: On pull request - from branch release-...
 # https://github.com/marketplace/actions/github-tag-check
 on:
   pull_request:
-    types: [closed]
     branches:
       - main
 
 jobs:
-  checkEvent:
-    # https://docs.github.com/en/actions/learn-github-actions/expressions
-    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release-') && contains(github.event.pull_request.labels.*.name, 'RELEASE')
-    runs-on: ubuntu-latest
-    steps:
-    - run: |
-        echo "merged: ${{ github.event.pull_request.merged }}"
-        echo "startsWith: ${{ startsWith(github.head_ref, 'release-') }}"
-
-
   logevent:
     runs-on: ubuntu-latest
     steps:
-    # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
-    - run: |
-        echo "${{ github.event_name }}"
-        echo "${{ github.ref }}"
-        echo "${{ github.base_ref }}"
-        echo "${{ github.head_ref }}"
-        echo "${{ github.ref_type }}"
-        echo "${{ github.workspace }}"
-        echo "--------------------------------------------"
-        echo "${{ toJSON(github.event) }}"
+      # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+      - run: |
+          echo "${{ github.event_name }}"
+          echo "${{ github.ref }}"
+          echo "${{ github.base_ref }}"
+          echo "${{ github.head_ref }}"
+          echo "${{ github.ref_type }}"
+          echo "${{ github.workspace }}"
+          echo "--------------------------------------------"
+          echo "${{ toJSON(github.event) }}"
+
+  checkEvent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: is not mergeable
+        # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idif
+        if: ${{ !(github.event.pull_request.merged == true && startsWith(github.head_ref, 'release-') && contains(github.event.pull_request.labels.*.name, 'RELEASE')) }}
+        run: exit 1
+      - name: is mergeable
+        # https://docs.github.com/en/actions/learn-github-actions/expressions
+        if: ${{ github.event.pull_request.merged == true && startsWith(github.head_ref, 'release-') && contains(github.event.pull_request.labels.*.name, 'RELEASE') }}
+        run: exit 0
 
   logeventRelease:
     needs: checkEvent
     runs-on: ubuntu-latest
     steps:
-    # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
-    - run: |
-        echo "--- event for github.event.pull_request.merged == true && startsWith(github.head_ref, 'release-') ---"
-        echo "${{ github.event_name }}"
-        echo "${{ github.ref }}"
-        echo "${{ github.base_ref }}"
-        echo "${{ github.head_ref }}"
-        echo "${{ github.ref_type }}"
-        echo "${{ github.workspace }}"
-        echo "${{ github.event.pull_request.labels }}"
-        echo "${{ contains(github.event.pull_request.labels.*.name, 'RELEASE') }}"
-
-
-
+      # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+      - run: |
+          echo "--- event for github.event.pull_request.merged == true && startsWith(github.head_ref, 'release-') ---"
+          echo "${{ github.event_name }}"
+          echo "${{ github.ref }}"
+          echo "${{ github.base_ref }}"
+          echo "${{ github.head_ref }}"
+          echo "${{ github.ref_type }}"
+          echo "${{ github.workspace }}"
+          echo "${{ github.event.pull_request.labels }}"
+          echo "${{ contains(github.event.pull_request.labels.*.name, 'RELEASE') }}"

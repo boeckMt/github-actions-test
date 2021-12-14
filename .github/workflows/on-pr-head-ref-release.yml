@@ -41,6 +41,8 @@ jobs:
   checkTag:
     needs: isMergeable
     runs-on: ubuntu-latest
+    outputs:
+      latesttag: ''
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -52,7 +54,13 @@ jobs:
         # fetch tags first
         run: |
           git fetch --prune --all --tags -f
-          git describe --tags "$(git rev-list --tags --max-count=1)"
+          echo "::set-output name=latesttag::$(echo git describe --tags '$(git rev-list --tags --max-count=1)')"
+      - name: log output
+        run: |
+          echo "${{ checkTag.outputs.latesttag }}"
+
+
+# needs.checkTag.outputs.latesttag
 
   checkEvent:
     needs: checkTag

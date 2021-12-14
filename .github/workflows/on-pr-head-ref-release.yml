@@ -14,6 +14,11 @@ jobs:
     # https://docs.github.com/en/actions/learn-github-actions/expressions
     if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release-')
     runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "merged: ${{ github.event.pull_request.merged }}"
+        echo "startsWith: ${{ startsWith(github.head_ref, 'release-') }}"
+
 
   logevent:
     runs-on: ubuntu-latest

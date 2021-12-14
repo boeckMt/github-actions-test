@@ -39,7 +39,18 @@ jobs:
         echo "--------------------------------------------"
         echo "${{ toJSON(github) }}"
 
-
+  logForRelease:
+    # https://docs.github.com/en/actions/learn-github-actions/expressions
+    if: startsWith(github.head_ref, 'release-')
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "${{ github.event_name }}"
+        echo "${{ github.ref }}"
+        echo "${{ github.base_ref }}"
+        echo "${{ github.head_ref }}"
+        echo "${{ github.ref_type }}"
+        echo "${{ github.workspace }}"
 
   test:
     needs: checkTags

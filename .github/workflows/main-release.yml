@@ -25,6 +25,14 @@ jobs:
         with:
           npmPackageName: "@dlr-eoc/core-ui"
 
+  logevent:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "${{ github.event_name }}"
+        echo "${{ github.ref }}"
+        echo "${{ toJSON(github.event) }}!"
+
   test:
     needs: checkTags
     if: github.event.pull_request.merged == true

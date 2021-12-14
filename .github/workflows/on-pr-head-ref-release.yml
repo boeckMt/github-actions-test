@@ -57,7 +57,7 @@ jobs:
           echo "::set-output name=latesttag::$(echo git describe --tags '$(git rev-list --tags --max-count=1)')"
       - name: log output
         run: |
-          echo "${{ checkTag.outputs.latesttag }}"
+          echo "${{ outputs.latesttag }}"
 
 
 # needs.checkTag.outputs.latesttag

@@ -42,6 +42,7 @@ jobs:
     needs: isMergeable
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: get latest tag
         # is the latest tag always the version we want to build???
         run: |

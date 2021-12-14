@@ -47,3 +47,8 @@ jobs:
         echo "${{ github.head_ref }}"
         echo "${{ github.ref_type }}"
         echo "${{ github.workspace }}"
+        echo "${{ github.event.pull_request.labels }}"
+        echo "${{ contains(github.event.pull_request.labels.*.name, 'RELEASE') }}"
+
+
+

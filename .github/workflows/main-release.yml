@@ -28,10 +28,18 @@ jobs:
   logevent:
     runs-on: ubuntu-latest
     steps:
+    # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
     - run: |
         echo "${{ github.event_name }}"
         echo "${{ github.ref }}"
-        echo "${{ toJSON(github.event) }}!"
+        echo "${{ github.base_ref }}"
+        echo "${{ github.head_ref }}"
+        echo "${{ github.ref_type }}"
+        echo "${{ github.workspace }}"
+        echo "--------------------------------------------"
+        echo "${{ toJSON(github) }}"
+
+
 
   test:
     needs: checkTags

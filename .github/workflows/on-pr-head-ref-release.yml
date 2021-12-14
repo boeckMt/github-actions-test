@@ -38,8 +38,17 @@ jobs:
         if: ${{ startsWith(github.head_ref, 'release-') && contains(github.event.pull_request.labels.*.name, 'RELEASE') }}
         run: exit 0
 
-  checkEvent:
+  checkTag:
     needs: isMergeable
+    runs-on: ubuntu-latest
+    steps:
+      - name: get latest tag
+        # is the latest tag always the version we want to build???
+        run: |
+          git describe --tags "$(git rev-list --tags --max-count=1)"
+
+  checkEvent:
+    needs: checkTag
     if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     steps:

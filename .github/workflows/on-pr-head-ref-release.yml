@@ -43,9 +43,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 15
+      - run: rm -f .npmrc
       - name: get latest tag
         # is the latest tag always the version we want to build???
+        # fetch tags first
         run: |
+          git fetch --prune --all --tags -f
           git describe --tags "$(git rev-list --tags --max-count=1)"
 
   checkEvent:

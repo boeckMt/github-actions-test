@@ -30,7 +30,6 @@ jobs:
         # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idif
         if: ${{ !(startsWith(github.head_ref, 'release-') && contains(github.event.pull_request.labels.*.name, 'RELEASE')) }}
         run: |
-          echo "merged: ${{ github.event.pull_request.merged }}"
           echo "startsWith 'release-': ${{ startsWith(github.head_ref, 'release-') }}"
           echo "contains labels 'RELEASE': ${{ contains(github.event.pull_request.labels.*.name, 'RELEASE') }}"
           exit 1

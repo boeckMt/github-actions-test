@@ -29,7 +29,11 @@ jobs:
       - name: is not mergeable
         # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idif
         if: ${{ !(github.event.pull_request.merged == true && startsWith(github.head_ref, 'release-') && contains(github.event.pull_request.labels.*.name, 'RELEASE')) }}
-        run: exit 1
+        run:  |
+           echo "merged: ${{ github.event.pull_request.merged }}"
+           echo "startsWith `release-`: ${{ startsWith(github.head_ref, 'release-') }}"
+           echo "contains labels `RELEASE`: ${{ contains(github.event.pull_request.labels.*.name, 'RELEASE') }}"
+           exit 1
       - name: is mergeable
         # https://docs.github.com/en/actions/learn-github-actions/expressions
         if: ${{ github.event.pull_request.merged == true && startsWith(github.head_ref, 'release-') && contains(github.event.pull_request.labels.*.name, 'RELEASE') }}

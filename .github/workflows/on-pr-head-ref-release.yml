@@ -1,0 +1,42 @@
+name: On pull request - from branch release-...
+
+# TODO: check run this workflow only if a certain tag exists and there is no npm version for it published
+# git tag -l v0.3.0
+# https://github.com/marketplace/actions/github-tag-check
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  checkEvent:
+    # https://docs.github.com/en/actions/learn-github-actions/expressions
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release-')
+    runs-on: ubuntu-latest
+
+  logevent:
+    runs-on: ubuntu-latest
+    steps:
+    # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+    - run: |
+        echo "${{ github.event_name }}"
+        echo "${{ github.ref }}"
+        echo "${{ github.base_ref }}"
+        echo "${{ github.head_ref }}"
+        echo "${{ github.ref_type }}"
+        echo "${{ github.workspace }}"
+
+  logeventRelease:
+    needs: checkEvent
+    runs-on: ubuntu-latest
+    steps:
+    # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+    - run: |
+        echo "--- event for github.event.pull_request.merged == true && startsWith(github.head_ref, 'release-') ---"
+        echo "${{ github.event_name }}"
+        echo "${{ github.ref }}"
+        echo "${{ github.base_ref }}"
+        echo "${{ github.head_ref }}"
+        echo "${{ github.ref_type }}"
+        echo "${{ github.workspace }}"

@@ -55,7 +55,7 @@ jobs:
         with:
           script: |
             const script = require('./.github/github-scripts/getGitTag.js');
-            await script({github, context, core})
+            await script({context, core, exec });
         # is the latest tag always the version we want to build???
         # fetch tags first
       - name: Get Tag bash

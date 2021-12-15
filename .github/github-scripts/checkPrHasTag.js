@@ -3,8 +3,15 @@ module.exports = async ({ github, context, core, exec, require }) => {
   // https://github.com/actions/toolkit/blob/main/packages/github/src/context.ts#L64
 
   // https://github.com/actions/github-script#welcome-a-first-time-contributor
-  const repo = context.payload.repository;
-  const pullOptions = github.rest.pulls.listCommits({
+  const owner = context.payload.repository.owner,
+  const repo = context.payload.repository.name;
+  const pull = context.payload.pull_request.number;
+
+  console.log(repo, pull);
+  console.dir(owner);
+
+
+  /* const pullOptions = github.rest.pulls.listCommits({
     owner: repo.owner,
     repo: repo.name,
     pull_number: context.payload.pull_request.number
@@ -13,7 +20,7 @@ module.exports = async ({ github, context, core, exec, require }) => {
 
   commits.forEach(c => {
     console.log(c)
-  });
+  }); */
 
 
   // https://github.com/actions/toolkit/tree/main/packages/exec#args

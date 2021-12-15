@@ -3,7 +3,7 @@ module.exports = async ({ github, context, core, exec, require }) => {
   // https://github.com/actions/toolkit/blob/main/packages/github/src/context.ts#L64
 
   // https://github.com/actions/github-script#welcome-a-first-time-contributor
-  const owner = context.payload.repository.owner,
+  const owner = context.payload.repository.owner;
   const repo = context.payload.repository.name;
   const pull = context.payload.pull_request.number;
 

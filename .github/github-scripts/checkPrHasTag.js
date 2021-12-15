@@ -3,7 +3,7 @@ module.exports = async ({ github, context, core, exec, require }) => {
   // https://github.com/actions/toolkit/blob/main/packages/github/src/context.ts#L64
 
   // https://github.com/actions/github-script#welcome-a-first-time-contributor
-  const repo = context.repository;
+  const repo = context.payload.repository;
   const pullOptions = github.rest.pulls.listCommits({
     owner: repo.owner,
     repo: repo.name,

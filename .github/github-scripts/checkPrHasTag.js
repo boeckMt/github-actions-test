@@ -32,6 +32,12 @@ module.exports = async ({ github, context, core, exec, require }) => {
     const result = await github.request(commits_url);
     console.log(result)
 
+    for (let c of result.data) {
+      const tag = await exec.getExecOutput(`git tag --points-at ${c.sha}`);
+      if (tag) {
+        console.log(tag);
+      }
+    };
 
   } else {
 

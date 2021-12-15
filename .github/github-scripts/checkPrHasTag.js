@@ -11,16 +11,16 @@ module.exports = async ({ github, context, core, exec, require }) => {
   console.log(owner, repo, pull);
 
 
-  /* const pullOptions = github.rest.pulls.listCommits({
-    owner: repo.owner,
-    repo: repo.name,
-    pull_number: context.payload.pull_request.number
+  const pullOptions = github.rest.pulls.listCommits({
+    owner,
+    repo,
+    pull_number: pull
   })
   const commits = await github.paginate(pullOptions);
 
   commits.forEach(c => {
     console.log(c)
-  }); */
+  });
 
 
   // https://github.com/actions/toolkit/tree/main/packages/exec#args

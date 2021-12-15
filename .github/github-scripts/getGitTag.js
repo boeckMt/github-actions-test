@@ -1,4 +1,4 @@
-module.exports = ({ github, context, core, glob, io, exec, require }) => {
+module.exports = async ({ github, context, core, glob, io, exec, require }) => {
   // fetch tags first
   await exec.exec(`git fetch --prune --all --tags -f`);
 

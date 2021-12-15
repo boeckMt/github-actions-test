@@ -56,7 +56,9 @@ jobs:
             // fetch tags first
             await exec.exec(`git fetch --prune --all --tags -f`);
             const commitLastTag = await exec.exec(`git rev-list --tags --max-count=1`);
-            const tag = await exec.exec(`git describe --tags ` + commitLastTag);
+            console.log('commitLastTag: ',commitLastTag)
+            const tag = await exec.exec(`git describe --tags ${commitLastTag}`);
+            console.log('tag: ',tag)
             // console.log(github);
             console.log(context);
 

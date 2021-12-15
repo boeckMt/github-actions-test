@@ -21,9 +21,11 @@ jobs:
           echo "${{ github.ref_type }}"
           echo "${{ github.workspace }}"
           echo "--------------------------------------------"
-          echo "${{ toJSON(github.event) }}"
+          echo "${{ toJSON(github.event.pull_request.title) }}"
+          echo "--------------------------------------------"
+          echo "${{ github.event }}"
 
-  isMergeable:
+  checkBranchAndLabel:
     runs-on: ubuntu-latest
     steps:
       - name: is not mergeable
@@ -39,10 +41,10 @@ jobs:
         run: exit 0
 
   checkTag:
-    needs: isMergeable
+    needs: checkBranchAndLabel
     runs-on: ubuntu-latest
     outputs:
-      latesttag: ''
+      latesttag: ${{ steps.get-tag.outputs.tag }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -50,14 +52,15 @@ jobs:
           node-version: 15
       - run: rm -f .npmrc
       - name: get latest tag
+      - id: get-tag
         # is the latest tag always the version we want to build???
         # fetch tags first
         run: |
           git fetch --prune --all --tags -f
-          echo "::set-output name=latesttag::$(echo git describe --tags '$(git rev-list --tags --max-count=1)')"
+          echo "::set-output name=tag::$(echo git describe --tags '$(git rev-list --tags --max-count=1)')"
       - name: log output
         run: |
-          echo "$latesttag"
+          echo "${{ steps.get-tag.outputs.tag }}"
 
 
 # needs.checkTag.outputs.latesttag

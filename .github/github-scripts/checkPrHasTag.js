@@ -17,12 +17,12 @@ module.exports = async ({ github, context, core, exec, require }) => {
     console.log(owner, repo, pull);
 
 
-    const pullOptions = github.rest.pulls.listCommits({
+    const commits = await github.rest.pulls.listCommits({
       owner,
       repo,
       pull_number: pull
     })
-    const commits = await github.paginate(pullOptions);
+    /* const commits = await github.paginate(pullOptions); */
 
     for (const commit of commits) {
       console.log(commit);

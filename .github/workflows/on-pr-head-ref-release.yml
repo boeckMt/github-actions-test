@@ -55,9 +55,28 @@ jobs:
           script: |
             // fetch tags first
             await exec.exec(`git fetch --prune --all --tags -f`);
-            const commitLastTag = await exec.exec(`git rev-list --tags --max-count=1`);
+
+            let tag = null;
+            let commitLastTag = null;
+
+            await exec.exec(`git rev-list --tags --max-count=1`,{
+              listeners: {
+                stdout: (data: Buffer) => {
+                  commitLastTag += data.toString();
+                }
+              }
+            });
+
+
+            await exec.exec(`git describe --tags ${commitLastTag}`, {
+              listeners: {
+                stdout: (data: Buffer) => {
+                  tag += data.toString();
+                }
+              }
+            });
+
             console.log('commitLastTag: ',commitLastTag)
-            const tag = await exec.exec(`git describe --tags ${commitLastTag}`);
             console.log('tag: ',tag)
             // console.log(github);
             console.log(context);
@@ -82,8 +101,7 @@ jobs:
           echo "${{ steps.get-tag.outputs.tag }}"
           echo "${{ steps.get-tag2.outputs.tag }}"
 
-
-# needs.checkTag.outputs.latesttag
+  # needs.checkTag.outputs.latesttag
 
   checkEvent:
     needs: checkTag

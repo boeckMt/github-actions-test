@@ -2,28 +2,13 @@ module.exports = async ({ context, core, exec }) => {
   // fetch tags first
   await exec.exec(`git fetch --prune --all --tags -f`);
 
-  let tag = null;
-  let commitLastTag = null;
-
   // https://github.com/actions/toolkit/tree/main/packages/exec#args
-  await exec.exec(`git rev-list --tags --max-count=1`, {
-    listeners: {
-      stdout: (data) => {
-        commitLastTag += data.toString();
-      }
-    }
-  });
+  // https://github.com/actions/toolkit/blob/main/packages/exec/src/exec.ts#L44
+  const commitLastTag = await exec.getExecOutput(`git rev-list --tags --max-count=1`);
 
+  const tag = await exec.getExecOutput(`git describe --tags ${commitLastTag.stdout}`);
 
-  await exec.exec(`git describe --tags ${commitLastTag}`, {
-    listeners: {
-      stdout: (data) => {
-        tag += data.toString();
-      }
-    }
-  });
-
-  console.log('commitLastTag: ', commitLastTag)
+  console.log('commitLastTag: ', commitLastTag.stdout)
   console.log('tag: ', tag)
   // console.log(github);
   console.log(context);

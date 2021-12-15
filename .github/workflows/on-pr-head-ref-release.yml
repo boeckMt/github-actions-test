@@ -59,13 +59,11 @@ jobs:
             const todo = await response.json();
             */
 
-            console.log(github);
+            const tag = await exec.exec('git describe --tags `git rev-list --tags --max-count=1`');
+            // console.log(github);
             console.log(context);
-            console.log(core);
-            console.log(glob);
-            console.log(io);
 
-            return 'todo';
+            return tag;
         # is the latest tag always the version we want to build???
         # fetch tags first
       - name: Get Tag bash

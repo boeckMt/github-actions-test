@@ -7,7 +7,7 @@ module.exports = async ({ github, context, core, exec, require }) => {
   const pullOptions = github.rest.pulls.listCommits({
     owner: repo.owner,
     repo: repo.name,
-    pull_number: context.pull_request.number
+    pull_number: context.payload.pull_request.number
   })
   const commits = await github.paginate(pullOptions);
 

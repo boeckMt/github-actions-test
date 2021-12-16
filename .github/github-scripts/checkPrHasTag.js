@@ -10,11 +10,9 @@ module.exports = async ({ github, context, core, exec, require }) => {
 
   // https://github.com/actions/github-script#welcome-a-first-time-contributor
   if (context.payload.repository && context.payload.pull_request) {
-    const owner = context.payload.repository.owner.login;
+    /* const owner = context.payload.repository.owner.login;
     const repo = context.payload.repository.name;
-    const pull = context.payload.pull_request.number;
-
-
+    const pull = context.payload.pull_request.number; */
 
     /* const pullOptions = await github.rest.pulls.listCommits({
       owner,
@@ -46,9 +44,8 @@ module.exports = async ({ github, context, core, exec, require }) => {
     });
 
     // fetsh tags before
-
-
-    await exec.getExecOutput(`git fetch --prune --all --tags -f`);
+    // https://github.com/actions/virtual-environments/issues/1717#issuecomment-702714806
+    await exec.getExecOutput(`git fetch --prune --all -f --depth=${commits_count+1}`);
 
     const tags = [];
     for (let c of result.data) {

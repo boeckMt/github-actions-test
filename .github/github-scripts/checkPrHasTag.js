@@ -29,8 +29,21 @@ module.exports = async ({ github, context, core, exec, require }) => {
 
 
     const commits_url = context.payload.pull_request.commits_url;
-    const result = await github.request(commits_url);
-    console.log(result)
+    const commits_count = context.payload.pull_request.commits;
+    const limit = 30;
+    /**
+     * https://docs.github.com/en/rest/reference/pulls#list-commits-on-a-pull-request
+     * per_page: Default 30
+     */
+    const getPage = (count) => {
+      const limit = 30;
+      return Math.ceil(count / limit)
+    }
+
+    const result = await github.request(commits_url, {
+      per_page: limit,
+      page: getPage(commits_count)
+    });
 
     const tags = [];
     for (let c of result.data) {

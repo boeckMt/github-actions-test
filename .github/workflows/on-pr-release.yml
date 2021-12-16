@@ -12,6 +12,8 @@ on:
 jobs:
   checkTitelTag:
     runs-on: ubuntu-latest
+    outputs:
+      VERSION_TAG: ${{ steps.get-tag.outputs.result }}
     steps:
       - uses: actions/checkout@v2
         # needs uses: actions/checkout@ is script is required
@@ -43,7 +45,9 @@ jobs:
     needs: checkTitelTag
     steps:
       - name: log output
-        run: echo "${{ needs.checkTitelTag.steps.get-tag.outputs.result }}"
+        run: |
+          echo "${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
+          echo "${{ github.env.VERSION_TAG }}""
 
       - name: checkBranchAndLabel
         uses: actions/github-script@v5

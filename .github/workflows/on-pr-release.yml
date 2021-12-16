@@ -39,17 +39,15 @@ jobs:
     needs: checkTitelTag
     steps:
       - name: log output
-        run: echo "${{ needs.checkTitelTag.get-tag.outputs.result}}"
+        run: echo "${{ needs.checkTitelTag.outputs.result}}"
       - name: checkBranchAndLabel
         uses: actions/github-script@v5
         with:
           script: |
             // https://github.com/actions/github-script/issues/56#issuecomment-642188313
-            console.log(process.env);
             console.log(context.payload.pull_request);
-
             if(context.payload.pull_request.head && context.payload.pull_request.labels){
-              const hasLabel = context.payload.pull_request.labels.includes('RELEASE');
+              const hasLabel = context.payload.pull_request.labels.find(i => i.name === 'RELEASE');
               const startsWith = context.payload.pull_request.head.ref.startsWith('release-')
               if(!(hasLabel && startsWith)){
                 core.setFailed(`pull_request head_ref startsWith 'release-' === ${startsWith} and labels hasLabel 'RELEASE' ===  ${hasLabel}`)

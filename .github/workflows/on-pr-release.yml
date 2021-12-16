@@ -1,0 +1,73 @@
+name: On pull request - check release
+
+# TODO: check run this workflow only if a certain tag exists and there is no npm version for it published
+# git tag -l v0.3.0
+# https://github.com/marketplace/actions/github-tag-check
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  checkTitelTag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        # needs uses: actions/checkout@ is script is required
+      - name: checkTitelTag
+        uses: actions/github-script@v5
+        id: get-tag2
+        with:
+          script: |
+            if (context.payload.pull_request && context.payload.pull_request.title) {
+              const title = context.payload.pull_request.title;
+              const parts = title.split('release-');
+              if (parts.length === 2) {
+                core.exportVariable('VERSION_TAG', parts[2]);
+              } else {
+                core.setFailed(`Your PR title does not follow the naming convention "release-v[0-9]+.[0-9]+.[0-9]" ${title}`)
+              }
+            }else{
+              core.setFailed(`context.payload does not have a pull_request" ${context.payload}`)
+            }
+
+  checkBranchAndLabel:
+    runs-on: ubuntu-latest
+    needs: checkTitelTag
+    steps:
+      - name: checkBranchAndLabel
+        uses: actions/github-script@v5
+        with:
+          script: |
+            // https://github.com/actions/github-script/issues/56#issuecomment-642188313
+            console.log(process.env.VERSION_TAG)
+            console.log(context.payload.pull_request.labels);
+            console.log('-----------------------------');
+            console.log(context.payload.pull_request.head);
+
+            if(context.payload.pull_request.head && context.payload.pull_request.labels){
+              const hasLabel = context.payload.pull_request.labels.includes(RELEASE);
+              const startsWith = context.payload.pull_request.head.ref.startsWith('release-')
+              if(!hasLabel && !startsWith){
+                core.setFailed(`pull_request head_ref and labels are not correct" ${context.payload}`)
+              }
+            }else{
+              core.setFailed(`context.payload does not have a pull_request" ${context.payload}`);
+            }
+
+  checkApproved:
+    runs-on: ubuntu-latest
+    needs: checkBranchAndLabel
+    if: ${{ github.event.review.state == 'approved' && env.VERSION_TAG }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - run: rm -f .npmrc
+      - uses: ./.github/actions/check-tag-on-npm
+        with:
+          npmPackageName: "@dlr-eoc/core-ui"
+          tag: "${{ env.VERSION_TAG }}"
+
+

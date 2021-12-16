@@ -47,7 +47,7 @@ jobs:
       - name: log output
         run: |
           echo "${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
-          echo "${{ github.env.VERSION_TAG }}""
+          echo "${{ github.env.VERSION_TAG }}"
 
       - name: checkBranchAndLabel
         uses: actions/github-script@v5

@@ -84,7 +84,7 @@ jobs:
   checkApproved:
     runs-on: ubuntu-latest
     needs: checkBranchAndLabel
-    if: ${{ github.event.review.state == 'approved' }}
+    if: ${{ github.env.VERSION_TAG }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2

@@ -47,7 +47,7 @@ module.exports = async ({ github, context, core, exec, require }) => {
 
     const tags = [];
     for (let c of result.data) {
-      const tag = await exec.getExecOutput(`git tag --points-at ${c.sha}`);
+      const tag = await exec.getExecOutput(`git describe --exact-match ${c.sha}`);
       if (tag) {
         tags.push(tag);
       }

@@ -82,18 +82,27 @@ jobs:
               core.setFailed(`context.payload does not have a pull_request" ${context.payload}`);
             }
 
+  testLog:
+    runs-on: ubuntu-latest
+    needs: checkBranchAndLabel
+    steps:
+      - name: log output
+        run: |
+          echo "${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
+          echo "${{ github.env.VERSION_TAG }}"
+
   checkApproved:
     runs-on: ubuntu-latest
     needs: checkBranchAndLabel
     # if: ${{ github.env.VERSION_TAG != '' }}
     steps:
-      - uses: actions/checkout@v2
       - name: log output
         run: |
           echo "${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
           echo "${{ needs.checkTitelTag.outputs.VERSION_TAG != '' }}"
           echo "${{ github.env.VERSION_TAG }}"
           echo "${{ github.env.VERSION_TAG != '' }}"
+      - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: 14

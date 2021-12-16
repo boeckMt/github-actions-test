@@ -45,9 +45,14 @@ module.exports = async ({ github, context, core, exec, require }) => {
       page: getPage(commits_count)
     });
 
+    // fetsh tags before
+
+
+    await exec.getExecOutput(`git fetch --prune --all --tags -f`);
+
     const tags = [];
     for (let c of result.data) {
-      const tag = await exec.getExecOutput(`git tag --contains ${c.sha}`);
+      const tag = await exec.getExecOutput(`git tag --points-at ${c.sha}`);
       if (tag) {
         tags.push(tag);
       }

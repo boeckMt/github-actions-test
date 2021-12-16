@@ -6,7 +6,16 @@
  */
 module.exports = async ({ github, context, core, exec, require }) => {
 
-  //
+  if (context.payload.pull_request.title) {
+    const title = context.payload.pull_request.title;
+    const parts = title.split('release-');
+    if (parts.length === 2) {
+      core.exportVariable('VERSION_TAG', parts[2]);
+    } else {
+      core.setFailed(`Your PR title does not follow the naming convention "release-v[0-9]+.[0-9]+.[0-9]" ${title}`)
+    }
+  }
+
 
   // https://github.com/actions/github-script#welcome-a-first-time-contributor
   if (context.payload.repository && context.payload.pull_request) {
@@ -26,14 +35,14 @@ module.exports = async ({ github, context, core, exec, require }) => {
     } */
 
 
-    const commits_url = context.payload.pull_request.commits_url;
+    /* const commits_url = context.payload.pull_request.commits_url;
     const commits_count = context.payload.pull_request.commits;
-    const limit = 30;
+    const limit = 30; */
     /**
      * https://docs.github.com/en/rest/reference/pulls#list-commits-on-a-pull-request
      * per_page: Default 30
      */
-    const getPage = (count) => {
+    /* const getPage = (count) => {
       const limit = 30;
       return Math.ceil(count / limit)
     }
@@ -41,11 +50,12 @@ module.exports = async ({ github, context, core, exec, require }) => {
     const result = await github.request(commits_url, {
       per_page: limit,
       page: getPage(commits_count)
-    });
+    }); */
 
     // fetsh tags before
     // https://github.com/actions/virtual-environments/issues/1717#issuecomment-702714806
-    await exec.getExecOutput(`git fetch --prune --all -f --depth=${commits_count+1}`);
+
+    /* await exec.getExecOutput(`git fetch --prune --all -f --depth=${commits_count+1}`);
 
     const tags = [];
     for (let c of result.data) {
@@ -55,7 +65,7 @@ module.exports = async ({ github, context, core, exec, require }) => {
       }
     };
 
-    console.log(tags);
+    console.log(tags); */
 
   } else {
 

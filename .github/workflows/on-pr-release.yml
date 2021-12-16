@@ -24,8 +24,7 @@ jobs:
               const title = context.payload.pull_request.title;
               const parts = title.split('release-');
               if (parts.length === 2) {
-                core.exportVariable('VERSION_TAG', parts[2]);
-                core.setOutput('VERSION_TAG', parts[2]);
+                core.info(`title contains version ${parts[2]}`);
                 return parts[2];
               } else {
                 core.setFailed(`Your PR title does not follow the naming convention "release-v[0-9]+.[0-9]+.[0-9]" ${title}`)
@@ -34,12 +33,16 @@ jobs:
               core.setFailed(`context.payload does not have a pull_request" ${context.payload}`)
             }
 
+      - name: log output
+        run: echo "${{ steps.get-tag.outputs.result }}"
+
   checkBranchAndLabel:
     runs-on: ubuntu-latest
     needs: checkTitelTag
     steps:
       - name: log output
-        run: echo "${{ needs.checkTitelTag.outputs.result}}"
+        run: echo "${{ needs.checkTitelTag.steps.get-tag.outputs.result }}"
+
       - name: checkBranchAndLabel
         uses: actions/github-script@v5
         with:

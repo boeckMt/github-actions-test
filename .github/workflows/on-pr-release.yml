@@ -69,4 +69,4 @@ jobs:
       - uses: ./.github/actions/check-tag-on-npm
         with:
           npmPackageName: "@dlr-eoc/core-ui"
-          tag: ${{ github.env. }}
+          tag: ${{ github.env.VERSION_TAG }}

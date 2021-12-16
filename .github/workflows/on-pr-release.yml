@@ -5,7 +5,7 @@ name: On pull request - check release
 # https://github.com/marketplace/actions/github-tag-check
 on:
   pull_request:
-    types: [opened, synchronize, reopened, edited]
+    types: [opened, synchronize, reopened, edited, labeled, unlabeled, review_requested]
     branches:
       - main
 

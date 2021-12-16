@@ -17,7 +17,7 @@ jobs:
         # needs uses: actions/checkout@ is script is required
       - name: checkTitelTag
         uses: actions/github-script@v5
-        id: get-tag2
+        id: get-tag
         with:
           script: |
             if (context.payload.pull_request && context.payload.pull_request.title) {
@@ -25,6 +25,8 @@ jobs:
               const parts = title.split('release-');
               if (parts.length === 2) {
                 core.exportVariable('VERSION_TAG', parts[2]);
+                core.setOutput('VERSION_TAG', parts[2]);
+                return parts[2];
               } else {
                 core.setFailed(`Your PR title does not follow the naming convention "release-v[0-9]+.[0-9]+.[0-9]" ${title}`)
               }
@@ -41,7 +43,7 @@ jobs:
         with:
           script: |
             // https://github.com/actions/github-script/issues/56#issuecomment-642188313
-            console.log(process.env['GITHUB_ENV'])
+            console.log(needs.get-tag.outputs)
             console.log(context.payload.pull_request);
 
             if(context.payload.pull_request.head && context.payload.pull_request.labels){
@@ -67,4 +69,4 @@ jobs:
       - uses: ./.github/actions/check-tag-on-npm
         with:
           npmPackageName: "@dlr-eoc/core-ui"
-          tag: "1.5.0"
+          tag: ${{ github.env. }}

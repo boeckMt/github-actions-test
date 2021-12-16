@@ -41,13 +41,11 @@ jobs:
         with:
           script: |
             // https://github.com/actions/github-script/issues/56#issuecomment-642188313
-            console.log(process.env.VERSION_TAG)
-            console.log(context.payload.pull_request.labels);
-            console.log('-----------------------------');
-            console.log(context.payload.pull_request.head);
+            console.log(process.env)
+            console.log(context.payload.pull_request);
 
             if(context.payload.pull_request.head && context.payload.pull_request.labels){
-              const hasLabel = context.payload.pull_request.labels.includes(RELEASE);
+              const hasLabel = context.payload.pull_request.labels.includes('RELEASE');
               const startsWith = context.payload.pull_request.head.ref.startsWith('release-')
               if(!hasLabel && !startsWith){
                 core.setFailed(`pull_request head_ref and labels are not correct" ${context.payload}`)

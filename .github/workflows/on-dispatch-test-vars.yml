@@ -1,4 +1,4 @@
-name: On workflow dispatch
+name: On workflow dispatch Var Test
 
 on:
   workflow_dispatch:

@@ -46,10 +46,11 @@ jobs:
               const title = context.payload.pull_request.title;
               const parts = title.split('release-');
               if (parts.length === 2) {
-                // core.setOutput('outputKey', 'outputVal');
+                core.setOutput('VERSION_TAG', parts[1]);
                 core.exportVariable('VERSION_TAG', parts[1]);
+                process.env.VERSION_TAG = parts[1];
                 core.info(`title contains version ${parts[1]}`);
-                return parts[1];
+                // return parts[1];
               } else {
                 core.setFailed(`Your PR title does not follow the naming convention "release-v[0-9]+.[0-9]+.[0-9]" ${title}`)
               }

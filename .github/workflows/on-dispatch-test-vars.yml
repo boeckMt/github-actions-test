@@ -59,6 +59,7 @@ jobs:
       - name: log vars shell
         run: |
           echo "needs.setOutputs.outputs.testOutput1: ${{ needs.setOutputs.outputs.testOutput1 }}"
+          echo "needs.setOutputs.outputs.testOutputName1: ${{ needs.setOutputs.outputs.testOutputName1 }}"
           echo "needs.setOutputs.outputs.testOutput2: ${{ needs.setOutputs.outputs.testOutput2 }}"
           echo "needs.setOutputs.outputs.testOutput3: ${{ needs.setOutputs.outputs.testOutput3 }}"
           echo "needs.setOutputs.outputs.testOutput4: ${{ needs.setOutputs.outputs.testOutput4 }}"
@@ -73,13 +74,13 @@ jobs:
         with:
           script: |
             if(github.env){
-              console.log('github.env);
+              console.log(github.env);
             }else{
               console.log('no github.env');
             }
 
             if(github.event){
-              console.log('github.event);
+              console.log(github.event);
             }else{
               console.log('no github.event');
             }

@@ -84,7 +84,7 @@ jobs:
 
   testLog:
     runs-on: ubuntu-latest
-    needs: checkBranchAndLabel
+    needs: checkTitelTag
     steps:
       - name: log output
         run: |

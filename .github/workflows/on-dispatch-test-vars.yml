@@ -12,70 +12,75 @@ env:
   testVar2: 2
 
 jobs:
-  logevent1:
+  setOutputs:
     runs-on: ubuntu-latest
     steps:
-      - name: log input and vars
-        run: |
-          echo "github.testInput1: ${{ github.testInput1 }}"
-          echo "github.event.inputs.testInput1: ${{ github.event.inputs.testInput1 }}"
-          echo "github.env.testVar2: ${{ github.env.testVar2 }}"
-          echo "env.testVar2: ${{ env.testVar2 }}"
+      - name: Set output shell
+        id: testOutput1
+        run: echo '::set-output name=testOutputName1::ffff1'
+
+      - name: Set output github-script
+        id: testOutput2
+        with:
+          script: |
+            core.setOutput('testOutputName2', 'ffff2');
+
+      - name: Return output github-script
+        id: testOutput3
+        with:
+          script: |
+            return 'ffff3';
+    outputs:
+      testOutput1: ${{ steps.testOutput1.testOutputName1 }}
+      testOutput2: ${{ steps.testOutput2.testOutputName2 }}
+      testOutput3: ${{ steps.testOutput3.result }}
+      testOutput4: "ffff4"
+
+  setVars:
+    runs-on: ubuntu-latest
+    env:
+      TEST_VAR_3: "aaaa3"
+    steps:
+      - name: Set Var shell
+        run: echo "TEST_VAR_1=aaaa1" >> $GITHUB_ENV
+
+      - name: Set Var github-script
+        with:
+          script: |
+            core.exportVariable('TEST_VAR_2', 'aaaa2');
 
   logevent2:
-    needs: logevent1
     runs-on: ubuntu-latest
+    needs: setOutputs
     steps:
-      - name: log vars
+      - name: log vars shell
         uses: actions/github-script@v5
-        id: log-vars
-        with:
-          script: |
-            core.setOutput('testOutput', 'ffff');
-            core.exportVariable('testVersion', '1.0.1');
-            process.env.testVersion = '1.0.1';
-            process.env.testVar2 = 20;
-            return 'xyz';
+        run: |
+          echo "needs.setOutputs.outputs.testOutput1: ${{ needs.setOutputs.outputs.testOutput1 }}"
+          echo "needs.setOutputs.outputs.testOutput2: ${{ needs.setOutputs.outputs.testOutput2 }}"
+          echo "needs.setOutputs.outputs.testOutput3: ${{ needs.setOutputs.outputs.testOutput3 }}"
+          echo "needs.setOutputs.outputs.testOutput4: ${{ needs.setOutputs.outputs.testOutput4 }}"
+          echo "github.event.inputs.testInput1: ${{ github.event.inputs.testInput1 }}"
 
-  logevent3:
-    needs: logevent2
-    runs-on: ubuntu-latest
-    steps:
+          echo "-----------------------------------------"
+
+          echo "${{ toJSON(needs) }}"
+
       - name: log vars github-script
         uses: actions/github-script@v5
-        id: log-vars
         with:
           script: |
-            if(process.env){
-              console.log('process.env.testVar2: ',process.env.testVar2);
-              console.log('process.env.testVersion: ',process.env.testVersion);
-            }else{
-              console.log('no process.env');
-            }
-
             if(github.env){
-              console.log('github.env.testVar2: ',github.env.testVar2);
+              console.log('github.env);
             }else{
               console.log('no github.env');
             }
 
             if(github.event){
-              console.log('github.event.inputs.testInput1: ',github.event.inputs.testInput1);
+              console.log('github.event);
             }else{
               console.log('no github.event');
             }
 
-            if(needs){
-              console.log('needs.logevent2.outputs.testOutput: ',needs.logevent2.outputs.testOutput);
-            }else{
-              console.log('no needs');
-            }
-
-
-      - name: log vars shell
-        run: |
-          echo ": needs.logevent2.outputs.testOutput: ${{ needs.logevent2.outputs.testOutput }}"
-          echo "needs.logevent2.outputs.TESTOUTPUT: ${{ needs.logevent2.outputs.TESTOUTPUT }}"
-          echo "needs.logevent2.outputs.TEST_OUTPUT : ${{ needs.logevent2.outputs.TEST_OUTPUT }}"
-          echo ": github.env.testVar2: ${{ github.env.testVar2 }}"
-          echo "${{ env.VERSION_TAG }}"
+            console.log('---------------------------------');
+            console.log(process.env);

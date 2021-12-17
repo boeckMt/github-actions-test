@@ -20,12 +20,14 @@ jobs:
         run: echo '::set-output name=testOutputName1::ffff1'
 
       - name: Set output github-script
+        uses: actions/github-script@v5
         id: testOutput2
         with:
           script: |
             core.setOutput('testOutputName2', 'ffff2');
 
       - name: Return output github-script
+        uses: actions/github-script@v5
         id: testOutput3
         with:
           script: |
@@ -45,6 +47,7 @@ jobs:
         run: echo "TEST_VAR_1=aaaa1" >> $GITHUB_ENV
 
       - name: Set Var github-script
+        uses: actions/github-script@v5
         with:
           script: |
             core.exportVariable('TEST_VAR_2', 'aaaa2');
@@ -54,7 +57,6 @@ jobs:
     needs: setOutputs
     steps:
       - name: log vars shell
-        uses: actions/github-script@v5
         run: |
           echo "needs.setOutputs.outputs.testOutput1: ${{ needs.setOutputs.outputs.testOutput1 }}"
           echo "needs.setOutputs.outputs.testOutput2: ${{ needs.setOutputs.outputs.testOutput2 }}"

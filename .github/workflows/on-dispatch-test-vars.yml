@@ -1,0 +1,63 @@
+name: On workflow dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      testInput1:
+        description: 'test input'
+        required: false
+
+env:
+  testVar2: 2
+
+jobs:
+  logevent1:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "github.testInput1: ${{ github.testInput1 }}"
+        echo "github.event.inputs.testInput1: ${{ github.event.inputs.testInput1 }}"
+        echo "github.env.testVar2: ${{ github.env.testVar2 }}"
+        echo "env.testVar2: ${{ env.testVar2 }}"
+
+   logevent2:
+    needs: logevent1
+    runs-on: ubuntu-latest
+    steps:
+    - name: log vars
+      uses: actions/github-script@v5
+      id: log-vars
+      with:
+        script: |
+          core.setOutput('testOutput1', 'ffff');
+          core.exportVariable('testVersion', '1.0.1');
+          process.env.testVersion = '1.0.1';
+          process.env.testVar2 = 20;
+          return 'xyz';
+
+  logevent3:
+    needs: logevent2
+    runs-on: ubuntu-latest
+    steps:
+    - name: log vars github-script
+      uses: actions/github-script@v5
+      id: log-vars
+      with:
+        script: |
+          console.log('process.env.testVar2: ',process.env.testVar2);
+          console.log('github.env.testVar2: ',github.env.testVar2);
+          console.log('process.env.testVersion: ',process.env.testVersion);
+          console.log('github.event.inputs.testInput1: ',github.event.inputs.testInput1);
+          console.log('needs.logevent2.outputs.testOutput: ',needs.logevent2.outputs.testOutput);
+
+
+    - name: log vars shell
+      run: |
+        echo ": needs.logevent2.outputs.testOutput: ${{ needs.logevent2.outputs.testOutput }}"
+        echo "needs.logevent2.outputs.TESTOUTPUT: ${{ needs.logevent2.outputs.TESTOUTPUT }}"
+        echo "needs.logevent2.outputs.TEST_OUTPUT : ${{ needs.logevent2.outputs.TEST_OUTPUT }}"
+        echo ": github.env.testVar2: ${{ github.env.testVar2 }}"
+        echo "${{ env.VERSION_TAG }}"
+
+
+

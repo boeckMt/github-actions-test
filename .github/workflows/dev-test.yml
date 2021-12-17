@@ -27,9 +27,10 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14
-      - uses: ./.github/actions/build-test
-#      - name: Archive dist artifacts
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: "dist"
-#          path: dist
+      - uses: ./.github/actions/test
+      - uses: ./.github/actions/build
+      - name: Archive dist artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: "dist"
+          path: dist

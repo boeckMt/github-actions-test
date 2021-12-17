@@ -22,3 +22,96 @@ jobs:
             const script = require('./.github/github-scripts/checkPrHasTag.js');
             await script({ github, context, core, exec, require });
         # is the latest tag always the version we want to build???
+
+  logevent:
+    runs-on: ubuntu-latest
+    steps:
+      # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+      - run: |
+          echo "${{ github.event_name }}"
+          echo "${{ github.ref }}"
+          echo "${{ github.base_ref }}"
+          echo "${{ github.head_ref }}"
+          echo "${{ github.ref_type }}"
+          echo "${{ github.workspace }}"
+          echo "--------------------------------------------"
+          echo "${{ toJSON(github.event.pull_request.title) }}"
+          echo "--------------------------------------------"
+          echo "${{ github.event }}"
+
+  checkBranchAndLabel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: is not mergeable
+        # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idif
+        if: ${{ !(startsWith(github.head_ref, 'release-') && contains(github.event.pull_request.labels.*.name, 'RELEASE')) }}
+        run: |
+          echo "startsWith 'release-': ${{ startsWith(github.head_ref, 'release-') }}"
+          echo "contains labels 'RELEASE': ${{ contains(github.event.pull_request.labels.*.name, 'RELEASE') }}"
+          exit 1
+      - name: is mergeable
+        # https://docs.github.com/en/actions/learn-github-actions/expressions
+        if: ${{ startsWith(github.head_ref, 'release-') && contains(github.event.pull_request.labels.*.name, 'RELEASE') }}
+        run: exit 0
+
+  checkTag:
+    needs: checkBranchAndLabel
+    runs-on: ubuntu-latest
+    outputs:
+      latesttag: ${{ steps.get-tag.outputs.tag }}
+      latesttag2: ${{ steps.get-tag2.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v2
+        # needs uses: actions/checkout@ is script is required
+      - name: Github script
+        uses: actions/github-script@v5
+        id: get-tag2
+        with:
+          script: |
+            const script = require('./.github/github-scripts/getGitTag.js');
+            await script({context, core, exec });
+        # is the latest tag always the version we want to build???
+        # fetch tags first
+      - name: Get Tag bash
+        id: get-tag
+        run: |
+          git fetch --prune --all --tags -f
+          echo "::set-output name=tag::$(echo git describe --tags '$(git rev-list --tags --max-count=1)')"
+      - name: log output
+        run: |
+          echo "${{ steps.get-tag.outputs.tag }}"
+          echo "${{ steps.get-tag2.outputs.tag }}"
+
+  # needs.checkTag.outputs.latesttag
+
+  checkEvent:
+    needs: checkTag
+    if: ${{ github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: is not merged
+        # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobsjob_idif
+        if: ${{ !(github.event.pull_request.merged == true) }}
+        run: |
+          echo "merged: ${{ github.event.pull_request.merged }}"
+          exit 1
+      - name: is merged
+        # https://docs.github.com/en/actions/learn-github-actions/expressions
+        if: ${{ github.event.pull_request.merged == true }}
+        run: exit 0
+
+  logeventRelease:
+    needs: checkEvent
+    runs-on: ubuntu-latest
+    steps:
+      # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+      - run: |
+          echo "--- event for github.event.pull_request.merged == true && startsWith(github.head_ref, 'release-') ---"
+          echo "${{ github.event_name }}"
+          echo "${{ github.ref }}"
+          echo "${{ github.base_ref }}"
+          echo "${{ github.head_ref }}"
+          echo "${{ github.ref_type }}"
+          echo "${{ github.workspace }}"
+          echo "${{ github.event.pull_request.labels }}"
+          echo "${{ contains(github.event.pull_request.labels.*.name, 'RELEASE') }}"

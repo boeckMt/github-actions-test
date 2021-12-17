@@ -46,11 +46,31 @@ jobs:
         id: log-vars
         with:
           script: |
-            console.log('process.env.testVar2: ',process.env.testVar2);
-            console.log('github.env.testVar2: ',github.env.testVar2);
-            console.log('process.env.testVersion: ',process.env.testVersion);
-            console.log('github.event.inputs.testInput1: ',github.event.inputs.testInput1);
-            console.log('needs.logevent2.outputs.testOutput: ',needs.logevent2.outputs.testOutput);
+            if(process.env){
+              console.log('process.env.testVar2: ',process.env.testVar2);
+              console.log('process.env.testVersion: ',process.env.testVersion);
+            }else{
+              console.log('no process.env');
+            }
+
+            if(github.env){
+              console.log('github.env.testVar2: ',github.env.testVar2);
+            }else{
+              console.log('no github.env');
+            }
+
+            if(github.event){
+              console.log('github.event.inputs.testInput1: ',github.event.inputs.testInput1);
+            }else{
+              console.log('no github.event');
+            }
+
+            if(needs){
+              console.log('needs.logevent2.outputs.testOutput: ',needs.logevent2.outputs.testOutput);
+            }else{
+              console.log('no needs');
+            }
+
 
       - name: log vars shell
         run: |

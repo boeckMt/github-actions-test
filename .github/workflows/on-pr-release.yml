@@ -65,6 +65,7 @@ jobs:
         run: |
           echo "${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
           echo "${{ github.env.VERSION_TAG }}"
+          echo "${{ env.VERSION_TAG }}"
 
       - name: checkBranchAndLabel
         uses: actions/github-script@v5
@@ -90,6 +91,7 @@ jobs:
         run: |
           echo "${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
           echo "${{ github.env.VERSION_TAG }}"
+          echo "${{ env.VERSION_TAG }}"
 
   checkApproved:
     runs-on: ubuntu-latest

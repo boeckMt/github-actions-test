@@ -55,11 +55,27 @@ jobs:
             }else{
               core.setFailed(`context.payload does not have a pull_request" ${context.payload}`)
             }
-
       - name: log output
         run: echo "${{ steps.get-tag.outputs.result }}"
     outputs:
       VERSION_TAG: ${{ steps.get-tag.outputs.result }}
+
+  checkTagOnNpm:
+    runs-on: ubuntu-latest
+    needs: checkTitelTag
+    if: ${{ needs.checkTitelTag.outputs.VERSION_TAG != '' }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - run: rm -f .npmrc
+      - uses: ./.github/actions/check-tag-on-npm
+        with:
+          npmPackageName: "@dlr-eoc/core-ui"
+          tag: ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
 
   checkBranchAndLabel:
     runs-on: ubuntu-latest
@@ -82,40 +98,32 @@ jobs:
             }
 
   build:
-    needs: checkBranchAndLabel
+    needs: [checkTitelTag, checkBranchAndLabel, checkTagOnNpm]
     runs-on: ubuntu-latest
-    steps:
-      # check out before using actions reference from the same repository!
-      - uses: actions/checkout@v2
-      - run: |
-          echo "run build"
-
-  checkApproved:
-    runs-on: ubuntu-latest
-    ## https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#example-requiring-dependent-jobs-to-be-successful
-    needs: [checkTitelTag, checkBranchAndLabel, build]
     if: ${{ needs.checkTitelTag.outputs.VERSION_TAG != '' }}
     steps:
-      - name: log output
-        run: |
-          echo "${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
-
       - uses: actions/checkout@v2
-      - name: fetch Tags
-        run: |
-          git fetch --all --tags
-
-      - name: checkout Tag
-        run: |
-          git checkout ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
-
+        with:
+          ref: ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
       - uses: actions/setup-node@v2
         with:
-          node-version: 14
-      - run: rm -f .npmrc
-      - uses: ./.github/actions/check-tag-on-npm
+          node-version: 15
+      - uses: ./.github/actions/test
+      - uses: ./.github/actions/build
+      - name: Archive dist artifacts
+        uses: actions/upload-artifact@v2
         with:
-          npmPackageName: "@dlr-eoc/core-ui"
-          tag: ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
+          name: "dist"
+          path: dist
+
+  # create Release on tag push https://github.com/softprops/action-gh-release
+  gh-release:
+    needs: [checkTitelTag, checkBranchAndLabel, checkTagOnNpm, build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
 
 

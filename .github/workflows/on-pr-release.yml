@@ -30,8 +30,8 @@ jobs:
   checkTitelTag:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      # needs uses: actions/checkout@ is script is required
+      # - uses: actions/checkout@v2
+      # needs uses: actions/checkout@ if script/module is required
       - name: checkTitelTag
         uses: actions/github-script@v5
         id: get-tag
@@ -92,9 +92,12 @@ jobs:
           echo "${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
 
       - uses: actions/checkout@v2
-      - name: checkout Tag
+      - name: fetch Tags
         run: |
           git fetch --all --tags
+
+      - name: checkout Tag
+        run: |
           git checkout ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
 
       - uses: actions/setup-node@v2

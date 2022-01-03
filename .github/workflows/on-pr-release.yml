@@ -10,15 +10,12 @@ on:
     branches:
       - main
 
-env:
-  VERSION_TAG: 'v'
-
 jobs:
   logevent:
     runs-on: ubuntu-latest
     steps:
       # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
-    - run: |
+      - run: |
           echo "${{ github.event_name }}"
           echo "${{ github.ref }}"
           echo "${{ github.base_ref }}"
@@ -32,11 +29,9 @@ jobs:
 
   checkTitelTag:
     runs-on: ubuntu-latest
-    outputs:
-      VERSION_TAG: ${{ steps.get-tag.outputs.result }}
     steps:
       - uses: actions/checkout@v2
-        # needs uses: actions/checkout@ is script is required
+      # needs uses: actions/checkout@ is script is required
       - name: checkTitelTag
         uses: actions/github-script@v5
         id: get-tag
@@ -46,11 +41,8 @@ jobs:
               const title = context.payload.pull_request.title;
               const parts = title.split('release-');
               if (parts.length === 2) {
-                core.setOutput('VERSION_TAG', parts[1]);
-                core.exportVariable('VERSION_TAG', parts[1]);
-                process.env.VERSION_TAG = parts[1];
                 core.info(`title contains version ${parts[1]}`);
-                // return parts[1];
+                return parts[1];
               } else {
                 core.setFailed(`Your PR title does not follow the naming convention "release-v[0-9]+.[0-9]+.[0-9]" ${title}`)
               }
@@ -60,18 +52,12 @@ jobs:
 
       - name: log output
         run: echo "${{ steps.get-tag.outputs.result }}"
+    outputs:
+      VERSION_TAG: ${{ steps.get-tag.outputs.result }}
 
   checkBranchAndLabel:
     runs-on: ubuntu-latest
-    needs: checkTitelTag
     steps:
-      - name: log output
-        run: |
-          echo "${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
-          echo "${{ github.env.VERSION_TAG }}"
-          echo "${{ env.VERSION_TAG }}"
-
-
       - name: checkBranchAndLabel
         uses: actions/github-script@v5
         with:
@@ -91,26 +77,23 @@ jobs:
 
   testLog:
     runs-on: ubuntu-latest
-    needs: checkBranchAndLabel
+    needs:  [checkTitelTag, checkBranchAndLabel]
     steps:
       - name: log output
         run: |
           echo "${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
-          echo "${{ github.env.VERSION_TAG }}"
-          echo "${{ env.VERSION_TAG }}"
+          echo "${{ needs.checkBranchAndLabel.outputs.VERSION_TAG }}"
 
   checkApproved:
     runs-on: ubuntu-latest
-    needs: checkBranchAndLabel
+    ## https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#example-requiring-dependent-jobs-to-be-successful
+    needs: [checkTitelTag, checkBranchAndLabel]
     # if: ${{ github.env.VERSION_TAG != '' }}
     steps:
       - name: log output
         run: |
           echo "${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
           echo "${{ needs.checkTitelTag.outputs.VERSION_TAG != '' }}"
-          echo "${{ github.env.VERSION_TAG }}"
-          echo "${{ github.env.VERSION_TAG != '' }}"
-          echo "${{ env.VERSION_TAG }}"
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
@@ -119,4 +102,4 @@ jobs:
       - uses: ./.github/actions/check-tag-on-npm
         with:
           npmPackageName: "@dlr-eoc/core-ui"
-          tag: ${{ github.env.VERSION_TAG }}
+          tag: ${{ needs.checkTitelTag.outputs.VERSION_TAG }}

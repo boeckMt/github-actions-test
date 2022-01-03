@@ -86,6 +86,11 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
+            console.log(${{ toJSON(needs) }});
+            console.log(${{ toJSON(needs).setVars }});
+            console.log(${{ needs.setVars }})
+
+            console.log('-------------------------------------------');
             console.log('process.env.testVar1', process.env.testVar1);
             console.log('process.env.testVar2', process.env.testVar2);
             console.log('process.env.testVar3', process.env.testVar3);

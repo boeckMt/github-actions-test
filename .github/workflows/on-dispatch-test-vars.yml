@@ -104,11 +104,11 @@ jobs:
     steps:
       - name: log vars shell
         run: |
-          echo "needs.setOutputs.outputs.testOutput1: ${{ needs.setOutputs.outputs.testOutput1 }}"
-          echo "needs.setOutputs.outputs.testOutputName1: ${{ needs.setOutputs.outputs.testOutputName1 }}"
-          echo "needs.setOutputs.outputs.testOutput2: ${{ needs.setOutputs.outputs.testOutput2 }}"
-          echo "needs.setOutputs.outputs.testOutput3: ${{ needs.setOutputs.outputs.testOutput3 }}"
-          echo "needs.setOutputs.outputs.testOutput4: ${{ needs.setOutputs.outputs.testOutput4 }}"
+          echo "needs.setVars.outputs.testOutput1: ${{ needs.setVars.outputs.testOutput1 }}"
+          echo "needs.setVars.outputs.testOutputName1: ${{ needs.setVars.outputs.testOutputName1 }}"
+          echo "needs.setVars.outputs.testOutput2: ${{ needs.setVars.outputs.testOutput2 }}"
+          echo "needs.setVars.outputs.testOutput3: ${{ needs.setVars.outputs.testOutput3 }}"
+          echo "needs.setVars.outputs.testOutput4: ${{ needs.setVars.outputs.testOutput4 }}"
           echo "github.event.inputs.testInput1: ${{ github.event.inputs.testInput1 }}"
 
           echo "-----------------------------------------"
@@ -119,10 +119,9 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            console.log(process.env);
+            console.log(${{ toJSON(needs) }});
 
-            console.log('-------------------------------------------------');
-
+            console.log('-------------------------------------------');
             console.log('process.env.testVar1', process.env.testVar1);
             console.log('process.env.testVar2', process.env.testVar2);
             console.log('process.env.testVar3', process.env.testVar3);

@@ -87,17 +87,15 @@ jobs:
     needs: [checkTitelTag, checkBranchAndLabel]
     if: ${{ needs.checkTitelTag.outputs.VERSION_TAG != '' }}
     steps:
-      - name: log output and fetch
+      - name: log output
         run: |
           echo "${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
-          git fetch --prune --all --tags -f
 
       - uses: actions/checkout@v2
-        with:
-          # The branch, tag or SHA to checkout. When checking out the repository that
-          # triggered a workflow, this defaults to the reference or SHA for that event.
-          # Otherwise, uses the default branch.
-          ref: "${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
+      - name: checkout Tag
+        run: |
+          git fetch --all --tags
+          git checkout ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
 
       - uses: actions/setup-node@v2
         with:

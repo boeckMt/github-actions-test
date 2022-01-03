@@ -93,7 +93,7 @@ jobs:
   checkApproved:
     runs-on: ubuntu-latest
     ## https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#example-requiring-dependent-jobs-to-be-successful
-    needs: [checkTitelTag, checkBranchAndLabel]
+    needs: [checkTitelTag, checkBranchAndLabel, build]
     if: ${{ needs.checkTitelTag.outputs.VERSION_TAG != '' }}
     steps:
       - name: log output

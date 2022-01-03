@@ -84,8 +84,14 @@ jobs:
       - name: log output
         run: |
           echo "${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
-          echo "${{ needs.checkTitelTag.outputs.VERSION_TAG != '' }}"
+
       - uses: actions/checkout@v2
+        with:
+          # The branch, tag or SHA to checkout. When checking out the repository that
+          # triggered a workflow, this defaults to the reference or SHA for that event.
+          # Otherwise, uses the default branch.
+          ref: "${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
+
       - uses: actions/setup-node@v2
         with:
           node-version: 14

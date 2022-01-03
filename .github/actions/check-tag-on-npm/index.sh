@@ -11,7 +11,7 @@
 #NPM_PACKAGE_TAGS="v0.4.0-next.1 , v0.4.0-next.2 , v0.9.0, v1.0.0, v1.0.1, v1.0.2, v1.0.3"
 
 # remove refs/tags/ and v
-TAG=$(printf "%s" "$TAG" | sed 's/refs\///g; s/tags\///g; s/v//g')
+TAG=$(printf "%s" "$TAG" | sed 's/refs\///g; s/tags\///g; s/v//g; s/"//g')
 if [ ! "$TAG" ];then
   echo "no tag was provided! ${TAG}"
   exit 1

@@ -68,6 +68,12 @@ jobs:
           echo "TEST_VAR_1=aaaa1" >> $GITHUB_ENV
           echo "TEST_VAR_4=aaaa4" >> $GITHUB_ENV
           echo "testVar4=aaaa4" >> $GITHUB_ENV
+      - name: Log Var shell in next step
+        run: |
+          echo ${{ env.testVar4 }}
+          echo ${{ env.testVar3 }}
+          echo ${{ env.TEST_VAR_4 }}
+          echo ${{ env.TEST_VAR_1 }}
 
       - name: Set Var github-script
         id: setVarGithubScript
@@ -97,7 +103,7 @@ jobs:
 
           echo "${{ toJSON(needs) }}"
 
-          echo "${{ env }}"
+          echo "${{ toJSON(env) }}"
 
       - name: log vars github-script
         uses: actions/github-script@v5

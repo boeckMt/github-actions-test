@@ -66,8 +66,10 @@ jobs:
     if: ${{ needs.checkTitelTag.outputs.VERSION_TAG != '' }}
     steps:
       - uses: actions/checkout@v2
-        with:
-          ref: +refs/tags/${{ needs.checkTitelTag.outputs.VERSION_TAG }}
+      - name: checkout tag
+        run: |
+          git fetch --all --tags
+          git checkout ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
       - uses: actions/setup-node@v2
         with:
           node-version: 14
@@ -103,8 +105,10 @@ jobs:
     if: ${{ needs.checkTitelTag.outputs.VERSION_TAG != '' }}
     steps:
       - uses: actions/checkout@v2
-        with:
-          ref: +refs/tags/${{ needs.checkTitelTag.outputs.VERSION_TAG }}
+      - name: checkout tag
+        run: |
+          git fetch --all --tags
+          git checkout ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
       - uses: actions/setup-node@v2
         with:
           node-version: 15
@@ -125,5 +129,3 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
-
-

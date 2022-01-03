@@ -33,9 +33,10 @@ jobs:
           script: |
             return 'ffff3';
     outputs:
-      testOutput1: ${{ steps.testOutput1.testOutputName1 }}
-      testOutput2: ${{ steps.testOutput2.testOutputName2 }}
-      testOutput3: ${{ steps.testOutput3.result }}
+      ## https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#using-workflow-commands-to-access-toolkit-functions
+      testOutput1: ${{ steps.testOutput1.outputs.testOutputName1 }}
+      testOutput2: ${{ steps.testOutput2.outputs.testOutputName2 }}
+      testOutput3: ${{ steps.testOutput3.outputs.result }}
       testOutput4: "ffff4"
 
   setVars:
@@ -69,20 +70,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: setOutputs
     steps:
-      - name: log vars shell
+      - name: log needs shell
         run: |
-          echo "needs.setOutputs.outputs.testOutput1: ${{ needs.setOutputs.outputs.testOutput1 }}"
-          echo "needs.setOutputs.outputs.testOutputName1: ${{ needs.setOutputs.outputs.testOutputName1 }}"
-          echo "needs.setOutputs.outputs.testOutput2: ${{ needs.setOutputs.outputs.testOutput2 }}"
-          echo "needs.setOutputs.outputs.testOutput3: ${{ needs.setOutputs.outputs.testOutput3 }}"
-          echo "needs.setOutputs.outputs.testOutput4: ${{ needs.setOutputs.outputs.testOutput4 }}"
-          echo "github.event.inputs.testInput1: ${{ github.event.inputs.testInput1 }}"
-
-          echo "-----------------------------------------"
-
           echo "${{ toJSON(needs) }}"
 
-      - name: log vars github-script
+      - name: log needs github-script
         uses: actions/github-script@v5
         with:
           script: |
@@ -92,17 +84,7 @@ jobs:
             console.log(_needs.setOutputs);
 
             console.log('-------------------------------------------');
-            console.log('process.env.testVar1', process.env.testVar1);
-            console.log('process.env.testVar2', process.env.testVar2);
-            console.log('process.env.testVar3', process.env.testVar3);
-            console.log('process.env.testVar4', process.env.testVar4);
-            console.log('process.env.testVar5', process.env.testVar5);
-
-            console.log('process.env.TEST_VAR_1', process.env.TEST_VAR_1);
-            console.log('process.env.TEST_VAR_2', process.env.TEST_VAR_2);
-            console.log('process.env.TEST_VAR_3', process.env.TEST_VAR_3);
-            console.log('process.env.TEST_VAR_4', process.env.TEST_VAR_4);
-            console.log('process.env.TEST_VAR_5', process.env.TEST_VAR_5);
+            console.log(process.env);
 
   logevent2:
     runs-on: ubuntu-latest
@@ -125,9 +107,6 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            console.log(${{ toJSON(needs) }});
-
-            console.log('-------------------------------------------');
             console.log('process.env.testVar1', process.env.testVar1);
             console.log('process.env.testVar2', process.env.testVar2);
             console.log('process.env.testVar3', process.env.testVar3);

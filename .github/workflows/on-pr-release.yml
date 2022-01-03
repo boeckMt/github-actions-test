@@ -81,6 +81,15 @@ jobs:
               core.setFailed(`context.payload does not have a pull_request" ${context.payload}`);
             }
 
+  build:
+    needs: checkBranchAndLabel
+    runs-on: ubuntu-latest
+    steps:
+      # check out before using actions reference from the same repository!
+      - uses: actions/checkout@v2
+      - run: |
+          echo "run build"
+
   checkApproved:
     runs-on: ubuntu-latest
     ## https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#example-requiring-dependent-jobs-to-be-successful
@@ -108,3 +117,5 @@ jobs:
         with:
           npmPackageName: "@dlr-eoc/core-ui"
           tag: ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
+
+

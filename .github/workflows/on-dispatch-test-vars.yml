@@ -42,11 +42,13 @@ jobs:
     runs-on: ubuntu-latest
     env:
       testVar3: "aaaa3"
+      TEST_VAR_4: "null"
     steps:
       - name: Set Var shell
         run: |
           echo "TEST_VAR_1=aaaa1" >> $GITHUB_ENV
-          echo "::set-env name=TEST_VAR_5::aaaa5"
+          echo "TEST_VAR_4=aaaa4" >> $GITHUB_ENV
+          echo "testVar4=aaaa4" >> $GITHUB_ENV
 
       - name: Set Var github-script
         uses: actions/github-script@v5
@@ -57,7 +59,7 @@ jobs:
             core.exportVariable('testVar3', 'aaaa3');
             return 1
 
-  logevent2:
+  logevent:
     runs-on: ubuntu-latest
     needs: setOutputs
     steps:
@@ -78,25 +80,49 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            if(github.env){
-              console.log(github.env);
-            }else{
-              console.log('no github.env');
-            }
-
-            if(github.event){
-              console.log(github.event);
-            }else{
-              console.log('no github.event');
-            }
-
-            console.log('---------------------------------');
             console.log('process.env.testVar1', process.env.testVar1);
             console.log('process.env.testVar2', process.env.testVar2);
             console.log('process.env.testVar3', process.env.testVar3);
+            console.log('process.env.testVar4', process.env.testVar4);
+            console.log('process.env.testVar5', process.env.testVar5);
 
+            console.log('process.env.TEST_VAR_1', process.env.TEST_VAR_1);
             console.log('process.env.TEST_VAR_2', process.env.TEST_VAR_2);
             console.log('process.env.TEST_VAR_3', process.env.TEST_VAR_3);
+            console.log('process.env.TEST_VAR_4', process.env.TEST_VAR_4);
+            console.log('process.env.TEST_VAR_5', process.env.TEST_VAR_5);
+
+  logevent2:
+    runs-on: ubuntu-latest
+    needs: setVars
+    steps:
+      - name: log vars shell
+        run: |
+          echo "needs.setOutputs.outputs.testOutput1: ${{ needs.setOutputs.outputs.testOutput1 }}"
+          echo "needs.setOutputs.outputs.testOutputName1: ${{ needs.setOutputs.outputs.testOutputName1 }}"
+          echo "needs.setOutputs.outputs.testOutput2: ${{ needs.setOutputs.outputs.testOutput2 }}"
+          echo "needs.setOutputs.outputs.testOutput3: ${{ needs.setOutputs.outputs.testOutput3 }}"
+          echo "needs.setOutputs.outputs.testOutput4: ${{ needs.setOutputs.outputs.testOutput4 }}"
+          echo "github.event.inputs.testInput1: ${{ github.event.inputs.testInput1 }}"
+
+          echo "-----------------------------------------"
+
+          echo "${{ toJSON(needs) }}"
+
+      - name: log vars github-script
+        uses: actions/github-script@v5
+        with:
+          script: |
+            console.log('process.env.testVar1', process.env.testVar1);
+            console.log('process.env.testVar2', process.env.testVar2);
+            console.log('process.env.testVar3', process.env.testVar3);
+            console.log('process.env.testVar4', process.env.testVar4);
+            console.log('process.env.testVar5', process.env.testVar5);
+
+            console.log('process.env.TEST_VAR_1', process.env.TEST_VAR_1);
+            console.log('process.env.TEST_VAR_2', process.env.TEST_VAR_2);
+            console.log('process.env.TEST_VAR_3', process.env.TEST_VAR_3);
+            console.log('process.env.TEST_VAR_4', process.env.TEST_VAR_4);
             console.log('process.env.TEST_VAR_5', process.env.TEST_VAR_5);
 
 

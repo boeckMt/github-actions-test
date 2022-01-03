@@ -95,6 +95,8 @@ jobs:
       TEST_VAR_4: "null"
 
   logVars:
+    ## https://github.community/t/support-global-environment-variables/16146/11
+    ## set-env -> or the newer >> $GITHUB_ENV does not work to share vars between other jobs
     runs-on: ubuntu-latest
     needs: setVars
     steps:

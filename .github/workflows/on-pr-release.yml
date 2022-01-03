@@ -112,7 +112,6 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 15
-      - uses: ./.github/actions/test
       - uses: ./.github/actions/build
       - name: Archive dist artifacts
         uses: actions/upload-artifact@v2
@@ -125,7 +124,10 @@ jobs:
     needs: [checkTitelTag, checkBranchAndLabel, checkTagOnNpm, build]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - name: checkout tag
+        run: |
+          git fetch --all --tags
+          git checkout ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
       - name: Release
         uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ needs.checkTitelTag.outputs.VERSION_TAG }}

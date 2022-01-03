@@ -59,6 +59,10 @@ jobs:
             core.exportVariable('TEST_VAR_2', 'aaaa2');
             core.exportVariable('testVar2', 'aaaa2');
             core.exportVariable('testVar3', 'aaaa3');
+
+            console.log('process.env.testVar2', process.env.testVar2);
+            console.log('process.env.testVar3', process.env.testVar3);
+            console.log('process.env.TEST_VAR_2', process.env.TEST_VAR_2);
             return 1
 
   logevent:

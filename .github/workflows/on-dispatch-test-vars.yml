@@ -88,9 +88,8 @@ jobs:
           script: |
             const _needs = ${{ toJSON(needs) }};
             console.log(_needs);
-            console.log(_needs.setVars);
-            const _needsObj = JSON.parse(_needs);
-            console.log(_needsObj.setVars);
+            console.log('---------------------');
+            console.log(_needs.setOutputs);
 
             console.log('-------------------------------------------');
             console.log('process.env.testVar1', process.env.testVar1);

@@ -41,7 +41,7 @@ jobs:
   setVars:
     runs-on: ubuntu-latest
     env:
-      TEST_VAR_3: "aaaa3"
+      testVar3: "aaaa3"
     steps:
       - name: Set Var shell
         run: echo "TEST_VAR_1=aaaa1" >> $GITHUB_ENV
@@ -51,6 +51,8 @@ jobs:
         with:
           script: |
             core.exportVariable('TEST_VAR_2', 'aaaa2');
+            core.exportVariable('testVar2', 'aaaa2');
+            core.exportVariable('testVar3', 'aaaa3');
 
   logevent2:
     runs-on: ubuntu-latest
@@ -86,4 +88,11 @@ jobs:
             }
 
             console.log('---------------------------------');
-            console.log(process.env);
+            console.log('process.env.testVar2', process.env.testVar2);
+            console.log('process.env.testVar3', process.env.testVar3);
+
+            console.log('process.env.TEST_VAR_2', process.env.TEST_VAR_2);
+            console.log('process.env.TEST_VAR_3', process.env.TEST_VAR_3);
+
+
+

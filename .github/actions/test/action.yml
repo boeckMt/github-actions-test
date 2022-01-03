@@ -1,5 +1,5 @@
-name: "Build and Test"
-description: "Do a npm build and teat"
+name: "Test"
+description: "Do a npm test"
 
 runs:
   using: "composite"
@@ -7,6 +7,4 @@ runs:
     - run: npm ci
       shell: bash
     - run: npm run test -- --watch=false --browsers=ChromeHeadless
-      shell: bash
-    - run: npm run build
       shell: bash

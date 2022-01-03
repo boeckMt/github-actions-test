@@ -1,0 +1,122 @@
+name: On workflow dispatch Var Test
+
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      testInput1:
+        description: "test input"
+        required: false
+
+env:
+  testVar2: 2
+
+jobs:
+  setOutputs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set output shell
+        id: testOutput1
+        run: echo '::set-output name=shellOutput::ffff1'
+
+      - name: Set output github-script
+        uses: actions/github-script@v5
+        id: testOutput2
+        with:
+          script: |
+            core.setOutput('githubScriptOutput', 'ffff2');
+
+      - name: Return output github-script
+        uses: actions/github-script@v5
+        id: testOutput3
+        with:
+          script: |
+            return 'ffff3';
+    outputs:
+      ## https://docs.github.com/en/actions/learn-github-actions/workflow-commands-for-github-actions#using-workflow-commands-to-access-toolkit-functions
+      testOutput1: ${{ steps.testOutput1.outputs.shellOutput }}
+      testOutput2: ${{ steps.testOutput2.outputs.githubScriptOutput }}
+      testOutput3: ${{ steps.testOutput3.outputs.result }}
+      testOutput4: "ffff4"
+
+  logOutputs:
+    runs-on: ubuntu-latest
+    needs: setOutputs
+    steps:
+      - name: log needs shell
+        run: |
+          echo "${{ toJSON(needs) }}"
+
+      - name: log needs github-script
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const _needs = ${{ toJSON(needs) }};
+            console.log(_needs);
+            console.log('---------------------');
+            console.log(_needs.setOutputs);
+
+            console.log('-------------------------------------------');
+            console.log(process.env);
+
+  setVars:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Var shell
+        id: setVarShell
+        run: |
+          echo "TEST_VAR_1=aaaa1" >> $GITHUB_ENV
+          echo "TEST_VAR_4=aaaa4" >> $GITHUB_ENV
+          echo "testVar4=aaaa4" >> $GITHUB_ENV
+      - name: Log Var shell in next step
+        run: |
+          echo ${{ env.testVar4 }}
+          echo ${{ env.testVar3 }}
+          echo ${{ env.TEST_VAR_4 }}
+          echo ${{ env.TEST_VAR_1 }}
+
+      - name: Set Var github-script
+        id: setVarGithubScript
+        uses: actions/github-script@v5
+        with:
+          script: |
+            console.log('process.env.GITHUB_ENV', process.env.GITHUB_ENV);
+
+            core.exportVariable('TEST_VAR_2', 'aaaa2');
+            core.exportVariable('testVar2', 'aaaa2');
+            core.exportVariable('testVar3', 'aaaa3');
+
+            console.log('process.env.testVar2', process.env.testVar2);
+            console.log('process.env.testVar3', process.env.testVar3);
+            console.log('process.env.TEST_VAR_2', process.env.TEST_VAR_2);
+            return 1
+    env:
+      testVar3: "aaaa3"
+      TEST_VAR_4: "null"
+
+  logVars:
+    ## https://github.community/t/support-global-environment-variables/16146/11
+    ## set-env -> or the newer >> $GITHUB_ENV does not work to share vars between other jobs
+    runs-on: ubuntu-latest
+    needs: setVars
+    steps:
+      - name: log vars shell
+        run: |
+
+          echo "${{ toJSON(needs) }}"
+
+          echo "${{ toJSON(env) }}"
+
+      - name: log vars github-script
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const _needs = ${{ toJSON(needs) }};
+            console.log(_needs);
+
+            console.log('-------------------------------------------');
+            console.log(process.env);
+
+
+
+

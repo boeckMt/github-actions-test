@@ -1,0 +1,110 @@
+name: On pull request - check release
+
+# TODO: check run this workflow only if a certain tag exists and there is no npm version for it published
+# git tag -l v0.3.0
+# https://github.com/marketplace/actions/github-tag-check
+on:
+  pull_request:
+    # https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#pull_request
+    types: [opened, synchronize, reopened, labeled, unlabeled, review_requested]
+    branches:
+      - main
+
+jobs:
+  logevent:
+    runs-on: ubuntu-latest
+    steps:
+      # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+      - run: |
+          echo "${{ github.event_name }}"
+          echo "${{ github.ref }}"
+          echo "${{ github.base_ref }}"
+          echo "${{ github.head_ref }}"
+          echo "${{ github.ref_type }}"
+          echo "${{ github.workspace }}"
+          echo "--------------------------------------------"
+          echo "${{ github.event }}"
+          echo "--------------------------------------------"
+          echo "${{ toJSON(github.event.pull_request) }}"
+
+  checkTitelTag:
+    runs-on: ubuntu-latest
+    steps:
+      # - uses: actions/checkout@v2
+      # needs uses: actions/checkout@ if script/module is required
+      - name: checkTitelTag
+        uses: actions/github-script@v5
+        id: get-tag
+        with:
+          script: |
+            if (context.payload.pull_request && context.payload.pull_request.title) {
+              const title = context.payload.pull_request.title;
+              const parts = title.split('release-');
+              if (parts.length === 2) {
+                const versionTag = parts[1];
+                core.info(`title contains version ${versionTag}`);
+
+                if(versionTag.startsWith('v')){
+                  return versionTag;
+                }else{
+                  core.setFailed(`Your PR title does not follow the naming convention of the version with "release-v..." ${title}`)
+                }
+              } else {
+                core.setFailed(`Your PR title does not follow the naming convention "release-v[0-9]+.[0-9]+.[0-9]" ${title}`)
+              }
+            }else{
+              core.setFailed(`context.payload does not have a pull_request" ${context.payload}`)
+            }
+
+      - name: log output
+        run: echo "${{ steps.get-tag.outputs.result }}"
+    outputs:
+      VERSION_TAG: ${{ steps.get-tag.outputs.result }}
+
+  checkBranchAndLabel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkBranchAndLabel
+        uses: actions/github-script@v5
+        with:
+          script: |
+            // https://github.com/actions/github-script/issues/56#issuecomment-642188313
+            // console.log(context.payload.pull_request);
+            // console.log(process.env);
+            if(context.payload.pull_request.head && context.payload.pull_request.labels){
+              const hasLabel = context.payload.pull_request.labels.find(i => i.name === 'RELEASE');
+              const startsWith = context.payload.pull_request.head.ref.startsWith('release-')
+              if(!(hasLabel && startsWith)){
+                core.setFailed(`pull_request head_ref startsWith 'release-' === ${startsWith} and labels hasLabel 'RELEASE' ===  ${hasLabel}`)
+              }
+            }else{
+              core.setFailed(`context.payload does not have a pull_request" ${context.payload}`);
+            }
+
+  checkApproved:
+    runs-on: ubuntu-latest
+    ## https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#example-requiring-dependent-jobs-to-be-successful
+    needs: [checkTitelTag, checkBranchAndLabel]
+    if: ${{ needs.checkTitelTag.outputs.VERSION_TAG != '' }}
+    steps:
+      - name: log output
+        run: |
+          echo "${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
+
+      - uses: actions/checkout@v2
+      - name: fetch Tags
+        run: |
+          git fetch --all --tags
+
+      - name: checkout Tag
+        run: |
+          git checkout ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - run: rm -f .npmrc
+      - uses: ./.github/actions/check-tag-on-npm
+        with:
+          npmPackageName: "@dlr-eoc/core-ui"
+          tag: ${{ needs.checkTitelTag.outputs.VERSION_TAG }}

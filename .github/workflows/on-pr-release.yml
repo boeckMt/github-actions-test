@@ -130,6 +130,10 @@ jobs:
           git fetch --all --tags
           git checkout ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
       - name: adjust github ref for tag
-        run: echo "GITHUB_REF=refs/tags/${{ '1.6.1' }}" >> $GITHUB_ENV
+        run: |
+          echo "GITHUB_REF=refs/tags/${{ 1.6.1 }}"
+          echo "GITHUB_REF=refs/tags/${{ '1.6.1' }}"
+          echo "GITHUB_REF=refs/tags/${{ needs.checkTitelTag.outputs.VERSION_TAG }}"
+          echo "GITHUB_REF=refs/tags/${{ '1.6.1' }}" >> $GITHUB_ENV
       - name: Release
         uses: softprops/action-gh-release@v1

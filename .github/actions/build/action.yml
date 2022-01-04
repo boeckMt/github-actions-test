@@ -4,5 +4,7 @@ description: "Do a npm build"
 runs:
   using: "composite"
   steps:
+    - run: npm ci
+      shell: bash
     - run: npm run build
       shell: bash

@@ -129,5 +129,7 @@ jobs:
         run: |
           git fetch --all --tags
           git checkout ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
+      - name: adjust github ref for tag
+        run: echo "GITHUB_REF=refs/tags/${{ needs.checkTitelTag.outputs.VERSION_TAG }}" >> $GITHUB_ENV
       - name: Release
         uses: softprops/action-gh-release@v1

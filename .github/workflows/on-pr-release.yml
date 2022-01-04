@@ -57,9 +57,9 @@ jobs:
               core.setFailed(`context.payload does not have a pull_request" ${context.payload}`)
             }
       - name: log output
-        run: |
-          echo "${{ steps.get-tag.outputs.result }}"
-          echo "${{ steps.get-tag.outputs.coreOutput }}"
+        run: echo "${{ steps.get-tag.outputs.result }}"
+      - name: log output2
+        run: echo "${{ steps.get-tag.outputs.coreOutput }}"
     outputs:
       VERSION_TAG: ${{ steps.get-tag.outputs.result }}
       VERSION_TAG2: ${{ steps.get-tag.outputs.coreOutput }}

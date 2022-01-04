@@ -130,7 +130,13 @@ jobs:
         run: |
           git fetch --all --tags
           git checkout ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
+      - name: Download dist result from job build for Release files
+        uses: actions/download-artifact@v2
+        with:
+          name: "dist"
+          path: dist
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
+          files: dist

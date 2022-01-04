@@ -112,6 +112,7 @@ jobs:
           git checkout ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
       - uses: actions/setup-node@v2
         with:
+          cache: 'npm'
           node-version: 15
       - uses: ./.github/actions/build
       - name: Archive dist artifacts

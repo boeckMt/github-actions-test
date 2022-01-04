@@ -139,4 +139,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
-          files: dist/
+          files: dist/**

@@ -7,6 +7,7 @@ on:
   pull_request:
     # https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#pull_request
     types: [opened, synchronize, reopened, labeled, unlabeled, review_requested]
+    # check/filter target branch
     branches:
       - main
 
@@ -27,8 +28,17 @@ jobs:
           echo "--------------------------------------------"
           echo "${{ toJSON(github.event.pull_request) }}"
 
+  run_if:
+    runs-on: ubuntu-latest
+    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
+    # check head (source) branch
+    if: ${{ startsWith(github.head_ref, 'release-') }}
+    steps:
+      - run: echo "Run the jobs for the release pull_request"
+
   checkBranch:
     runs-on: ubuntu-latest
+    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
     if: ${{ startsWith(github.head_ref, 'release-') }}
     steps:
       - name: checkBranch
@@ -40,14 +50,7 @@ jobs:
             if(context.payload.pull_request.head){
               const startsWith = context.payload.pull_request.head.ref.startsWith('release-');
               if(!startsWith){
-                // process.exitCode = ExitCode.Failure ->
-                // core.setFailed(`pull_request branch (head_ref) startsWith 'release-' === ${startsWith}`)
-                // skip
-                // process.stdout.write('[skip-ci]');
-                // https://github.com/actions/runner/blob/be9632302ceef50bfb36ea998cea9c94c75e5d4d/src/Runner.Common/ActionResult.cs
-                // https://docs.github.com/en/enterprise-cloud@latest/actions/managing-workflow-runs/canceling-a-workflow
-                core.setOutput('skip', true);
-                return process.exit(0);
+                core.setFailed(`pull_request branch (head_ref) startsWith 'release-' === ${startsWith}`)
               }
             }else{
               core.setFailed(`context.payload does not have a pull_request" ${context.payload}`);
@@ -55,7 +58,7 @@ jobs:
 
   checkTitelTag:
     runs-on: ubuntu-latest
-    needs: checkBranch
+    needs: run_if
     steps:
       # - uses: actions/checkout@v2
       # needs uses: actions/checkout@ if script/module is required
@@ -104,7 +107,7 @@ jobs:
           tag: ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
 
   build:
-    needs: [checkBranch, checkTitelTag, checkTagOnNpm]
+    needs: [run_if, checkTitelTag, checkTagOnNpm]
     runs-on: ubuntu-latest
     if: ${{ needs.checkTitelTag.outputs.VERSION_TAG != '' }}
     steps:
@@ -145,7 +148,7 @@ jobs:
 
   # create Release on tag push https://github.com/softprops/action-gh-release
   gh-release:
-    needs: [checkTitelTag, checkTagOnNpm, checkBranch, build, checkLabel]
+    needs: [run_if, checkTitelTag, checkTagOnNpm, build, checkLabel]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

@@ -27,8 +27,27 @@ jobs:
           echo "--------------------------------------------"
           echo "${{ toJSON(github.event.pull_request) }}"
 
+  checkBranch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkBranch
+        uses: actions/github-script@v5
+        with:
+          script: |
+            // https://github.com/actions/github-script/issues/56#issuecomment-642188313
+            // console.log(context.payload.pull_request);
+            if(context.payload.pull_request.head){
+              const startsWith = context.payload.pull_request.head.ref.startsWith('release-');
+              if(!startsWith){
+                core.setFailed(`pull_request branch (head_ref) startsWith 'release-' === ${startsWith}`)
+              }
+            }else{
+              core.setFailed(`context.payload does not have a pull_request" ${context.payload}`);
+            }
+
   checkTitelTag:
     runs-on: ubuntu-latest
+    needs: checkBranch
     steps:
       # - uses: actions/checkout@v2
       # needs uses: actions/checkout@ if script/module is required
@@ -76,26 +95,8 @@ jobs:
           npmPackageName: "@dlr-eoc/core-ui"
           tag: ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
 
-  checkBranch:
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkBranch
-        uses: actions/github-script@v5
-        with:
-          script: |
-            // https://github.com/actions/github-script/issues/56#issuecomment-642188313
-            // console.log(context.payload.pull_request);
-            if(context.payload.pull_request.head){
-              const startsWith = context.payload.pull_request.head.ref.startsWith('release-');
-              if(!startsWith){
-                core.setFailed(`pull_request branch (head_ref) startsWith 'release-' === ${startsWith}`)
-              }
-            }else{
-              core.setFailed(`context.payload does not have a pull_request" ${context.payload}`);
-            }
-
   build:
-    needs: [checkTitelTag, checkTagOnNpm, checkBranch]
+    needs: [checkBranch, checkTitelTag, checkTagOnNpm]
     runs-on: ubuntu-latest
     if: ${{ needs.checkTitelTag.outputs.VERSION_TAG != '' }}
     steps:

@@ -29,6 +29,7 @@ jobs:
 
   checkBranch:
     runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.head_ref, ''release-'') }}
     steps:
       - name: checkBranch
         uses: actions/github-script@v5
@@ -42,8 +43,10 @@ jobs:
                 // process.exitCode = ExitCode.Failure ->
                 // core.setFailed(`pull_request branch (head_ref) startsWith 'release-' === ${startsWith}`)
                 // skip
-                process.stdout.write('[skip-ci]');
+                // process.stdout.write('[skip-ci]');
                 // https://github.com/actions/runner/blob/be9632302ceef50bfb36ea998cea9c94c75e5d4d/src/Runner.Common/ActionResult.cs
+                // https://docs.github.com/en/enterprise-cloud@latest/actions/managing-workflow-runs/canceling-a-workflow
+                core.setOutput('skip', true);
                 return process.exit(0);
               }
             }else{

@@ -42,9 +42,9 @@ jobs:
                 // process.exitCode = ExitCode.Failure ->
                 // core.setFailed(`pull_request branch (head_ref) startsWith 'release-' === ${startsWith}`)
                 // skip
-                // process.stdout.write('[skip-ci]');
+                process.stdout.write('[skip-ci]');
                 // https://github.com/actions/runner/blob/be9632302ceef50bfb36ea998cea9c94c75e5d4d/src/Runner.Common/ActionResult.cs
-                return process.exit(3);
+                return process.exit(0);
               }
             }else{
               core.setFailed(`context.payload does not have a pull_request" ${context.payload}`);

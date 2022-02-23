@@ -26,7 +26,7 @@ jobs:
           echo "--------------------------------------------"
           echo "${{ github.event }}"
           echo "--------------------------------------------"
-          echo "${{ toJSON(github.event.pull_request) }}"
+         # echo "${{ toJSON(github.event.pull_request) }}"
 
   run_if:
     runs-on: ubuntu-latest

@@ -12,21 +12,21 @@ on:
       - main
 
 jobs:
-  logevent:
-    runs-on: ubuntu-latest
-    steps:
-      # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
-      - run: |
-          echo "${{ github.event_name }}"
-          echo "${{ github.ref }}"
-          echo "${{ github.base_ref }}"
-          echo "${{ github.head_ref }}"
-          echo "${{ github.ref_type }}"
-          echo "${{ github.workspace }}"
-          echo "--------------------------------------------"
-          echo "${{ github.event }}"
-          echo "--------------------------------------------"
-         # echo "${{ toJSON(github.event.pull_request) }}"
+  # logevent:
+  #  runs-on: ubuntu-latest
+  #  steps:
+  #    # https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+  #    - run: |
+  #        echo "${{ github.event_name }}"
+  #        echo "${{ github.ref }}"
+  #        echo "${{ github.base_ref }}"
+  #        echo "${{ github.head_ref }}"
+  #        echo "${{ github.ref_type }}"
+  #        echo "${{ github.workspace }}"
+  #        echo "--------------------------------------------"
+  #        echo "${{ github.event }}"
+  #        echo "--------------------------------------------"
+  #       # echo "${{ toJSON(github.event.pull_request) }}"
 
   run_if:
     runs-on: ubuntu-latest
@@ -36,25 +36,25 @@ jobs:
     steps:
       - run: echo "Run the jobs for the release pull_request"
 
-  checkBranch:
-    runs-on: ubuntu-latest
-    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
-    if: ${{ startsWith(github.head_ref, 'release-') }}
-    steps:
-      - name: checkBranch
-        uses: actions/github-script@v5
-        with:
-          script: |
-            // https://github.com/actions/github-script/issues/56#issuecomment-642188313
-            // console.log(context.payload.pull_request);
-            if(context.payload.pull_request.head){
-              const startsWith = context.payload.pull_request.head.ref.startsWith('release-');
-              if(!startsWith){
-                core.setFailed(`pull_request branch (head_ref) startsWith 'release-' === ${startsWith}`)
-              }
-            }else{
-              core.setFailed(`context.payload does not have a pull_request" ${context.payload}`);
-            }
+  # checkBranch:
+  #  runs-on: ubuntu-latest
+  #  # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
+  #  if: ${{ startsWith(github.head_ref, 'release-') }}
+  #  steps:
+  #    - name: checkBranch
+  #      uses: actions/github-script@v5
+  #      with:
+  #        script: |
+  #          // https://github.com/actions/github-script/issues/56#issuecomment-642188313
+  #          // console.log(context.payload.pull_request);
+  #          if(context.payload.pull_request.head){
+  #            const startsWith = context.payload.pull_request.head.ref.startsWith('release-');
+  #            if(!startsWith){
+  #              core.setFailed(`pull_request branch (head_ref) startsWith 'release-' === ${startsWith}`)
+  #            }
+  #          }else{
+  #            core.setFailed(`context.payload does not have a pull_request" ${context.payload}`);
+  #          }
 
   checkTitelTag:
     runs-on: ubuntu-latest

@@ -36,6 +36,14 @@ jobs:
     steps:
       - run: echo "Run the jobs for the release pull_request"
 
+  skip_if:
+    runs-on: ubuntu-latest
+    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
+    # check head (source) branch
+    if: ${{ !startsWith(github.head_ref, 'release-') }}
+    steps:
+      - run: echo "The workflow was skiped because this is not a release PR"
+
   # checkBranch:
   #  runs-on: ubuntu-latest
   #  # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request

@@ -6,5 +6,9 @@ runs:
   steps:
     - run: npm ci
       shell: bash
-    - run: npm run build
+    - run: |
+        npm run build -- --project=test-lib
+        npm run build -- --project=test-lib2
+        npm run build -- --project=test-lib3
+        npm run build -- --project=test-app
       shell: bash

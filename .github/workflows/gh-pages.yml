@@ -14,7 +14,7 @@ jobs:
       - name: Install and Build # This example project is built using npm and outputs the result to the 'dist' folder.
         run: |
           npm ci
-          npx ng build test-app  --prod --aot --vendor-chunk --common-chunk --delete-output-path --build-optimizer --base-href=/github-actions-test/
+          npx ng build --project=test-app --base-href=/github-actions-test/
 
       # https://docs.github.com/de/actions/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow
       # use this and not upload-artifact@v4 because so all metadata is set correctly

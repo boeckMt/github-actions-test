@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: run_if
     steps:
-      # - uses: actions/checkout@v2
+      # - uses: actions/checkout@v4
       # needs uses: actions/checkout@ if script/module is required
       - name: checkTitelTag
         uses: actions/github-script@v5
@@ -96,7 +96,7 @@ jobs:
     needs: checkTitelTag
     if: ${{ needs.checkTitelTag.outputs.VERSION_TAG != '' }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: checkout tag
         run: |
           git fetch --all --tags
@@ -111,18 +111,18 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ needs.checkTitelTag.outputs.VERSION_TAG != '' }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: checkout tag
         run: |
           git fetch --all --tags
           git checkout ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v4
         with:
           cache: 'npm'
-          node-version: 15
+          node-version: 22
       - uses: ./.github/actions/build
       - name: Archive dist artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: "dist"
           path: dist
@@ -151,12 +151,12 @@ jobs:
     needs: [run_if, checkTitelTag, checkTagOnNpm, build, checkLabel]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: checkout tag
         run: |
           git fetch --all --tags
           git checkout ${{ needs.checkTitelTag.outputs.VERSION_TAG }}
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.checkTitelTag.outputs.VERSION_TAG }}

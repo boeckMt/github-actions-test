@@ -6,7 +6,7 @@
   - main-release: runs only pull_request merged to branch main and if check-tags action works
 
 ## actions: ([composite run steps action](https://docs.github.com/en/actions/creating-actions/creating-a-composite-run-steps-action))
-  - build-test: npm run test and npm run buld // you need to use actions/setup-node@v2 before in your workflow because `uses:` is [currently not allowed](https://github.com/actions/runner/issues/646#issuecomment-777325191) in composite actions
+  - build-test: npm run test and npm run buld // you need to use actions/setup-node@v4 before in your workflow because `uses:` is [currently not allowed](https://github.com/actions/runner/issues/646#issuecomment-777325191) in composite actions
   - check-tags: checks git tag and npm version for a repository to prevent wrong publications.
 
 

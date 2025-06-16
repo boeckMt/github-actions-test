@@ -1,12 +1,12 @@
 {
   "name": "test-lib3",
   "version": "0.0.1",
-  "main": "src/public-api",
   "peerDependencies": {
-    "@angular/common": "^12.1.1",
-    "@angular/core": "^12.1.1"
+    "@angular/common": "^20.0.0",
+    "@angular/core": "^20.0.0"
   },
   "dependencies": {
-    "tslib": "^2.2.0"
-  }
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
 }

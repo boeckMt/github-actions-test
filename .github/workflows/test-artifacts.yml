@@ -7,10 +7,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 14
+          node-version: 22
       - run: rm -f .npmrc
       - run: npm ci
       - run: npx ng build test-lib --configuration=production
@@ -29,8 +29,9 @@ jobs:
               dir=${dir%*/}
               ls "$dir" -la
           done
+      # https://docs.github.com/de/actions/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow
       - name: Archive dist artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: "dist"
           path: dist
@@ -38,15 +39,15 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Download dist result from job build
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: "dist"
           path: dist
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v4
         with:
-          node-version: 14
+          node-version: 22
       - run: rm -f .npmrc
       - run: npm ci
       - run: |
@@ -56,7 +57,7 @@ jobs:
               node ./scripts/update-package.js --path="$dir"
           done
       - name: Archive adjusted dist with artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: "dist2"
           path: dist

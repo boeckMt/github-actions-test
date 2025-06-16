@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # check out before using actions reference from the same repository!
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 14
+          node-version: 22
       - run: rm -f .npmrc
       - uses: ./.github/actions/check-tag-on-npm
         with:
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # check out before using actions reference from the same repository!
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: |
           echo "run test"
           echo "${{ github.event_name }}"
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # check out before using actions reference from the same repository!
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: |
           echo "run build"
 
@@ -73,6 +73,6 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           prerelease: true

@@ -27,6 +27,8 @@ jobs:
         echo "${{ github.event_name }}"
         echo "${{ github.ref }}"
         echo "${{ toJSON(github.event) }}!"
+    - run: |
+        node .github/github-scripts/nodeEnvLog.js
   # Test create Release on tag push https://github.com/softprops/action-gh-release
   gh-release:
     runs-on: ubuntu-latest

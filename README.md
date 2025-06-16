@@ -33,6 +33,7 @@
 
 - gh-pages: on push branch main
   - build ng app and deploys dist/test-app as pages
+  - https://boeckmt.github.io/github-actions-test/
 
 - github-script-test: on push branch main
   - test for actions/github-script

@@ -11,7 +11,7 @@
 
 
 ## set version
-`npm version <newversion> -m "..." (major | minor | patch)``
+`npm version <newversion> -m "..." (major | minor | patch)`
 
 ## trigger workflows
 - dev-test: 
@@ -20,10 +20,13 @@
 - pre-release: `git push origin --tags`
   - before run `npm version prerelease --preid=next -m "test prerelease"` or run `npm version <0.1.5-beta.0>` for a custom version
 
-- main-release: on pull request
+- main-release: on pull request (only if head branch follows naming conventions)
   - `git checkout -b release-<v*.*.*>`
-  - ... code and wait for pull request review
-  - shortly before the pull request will be merged `git push origin --tags`
+  - update docs
+  - crtete version `npm version <major | minor | patch> -m "..."`
+  - check if building without errors
+  - Add the Label `RELEASE` to the PR
+  - after finished run merge the PR
 
 - check-tag: on push tags
   - `git push origin --tags`

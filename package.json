@@ -1,6 +1,6 @@
 {
   "name": "github-actions-test",
-  "version": "2.2.1-next.7",
+  "version": "2.2.1-next.8",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

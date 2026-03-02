@@ -85,6 +85,16 @@ jobs:
               return json;
             });
       - run: |
-          ls -la
+          for dir in ./dist/*/;
+          do
+              dir=${dir%*/}
+
+              # Write a minimal .npmrc that contains the token
+              cat <<EOF > "$dir/.npmrc"
+              //npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}
+              EOF
+              
+              npm publish "$dir" --access public --tag "latest" --provenance
+          done
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

@@ -12,7 +12,6 @@ on:
 jobs:
   build:
       runs-on: ubuntu-latest
-      if: github.event_name == 'pull_request'  # Only for PRs
       steps:
         - uses: actions/checkout@v6
         - uses: actions/setup-node@v6
@@ -35,7 +34,8 @@ jobs:
             path: dist
 
   publish-gpr:
-    # needs: [build]
+    # build artifact can not be used from old workflow?
+    needs: [build]
     runs-on: ubuntu-latest
     permissions:
       packages: write

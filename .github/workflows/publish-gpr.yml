@@ -85,6 +85,6 @@ jobs:
               return json;
             });
       - run: |
-          ls -R "$dir"
+          ls -R .
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

@@ -30,6 +30,7 @@
     "@angular/cli": "^21.2.0",
     "@angular/compiler-cli": "^21.2.0",
     "@types/jasmine": "~5.1.0",
+    "@types/node": "^25.3.3",
     "cross-fetch": "^4.1.0",
     "jasmine-core": "~5.7.0",
     "karma": "~6.4.0",

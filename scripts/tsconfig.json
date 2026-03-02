@@ -9,11 +9,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
     "types": [
-      "jasmine",
       "node"
     ],
     "lib": [

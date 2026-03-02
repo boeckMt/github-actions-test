@@ -22,7 +22,28 @@ jobs:
         with:
           script: |
             const script = require('./scripts/adjust-package-json.js');
-            script({github, context});
+            const path = './dist/test-lib/package.json';
+            const path2 = './dist/test-lib2/package.json';
+            const path3 = './dist/test-lib3/package.json';
+
+            script({github, context}, path, (json)=>{
+              json.scripts = {
+                "testexit": "node --eval \"console.log('test script should not exit process.\\n')\""
+              };
+              return json;
+            });
+            script({github, context}, path2, (json)=>{
+              json.scripts = {
+                "testexit": "node --eval \"console.log('test script should not exit process.\\n')\""
+              };
+              return json;
+            });
+            script({github, context}, path3, (json)=>{
+              json.scripts = {
+                "testexit": "node --eval \"console.log('test script should not exit process.\\n')\""
+              };
+              return json;
+            });
       - run: |
           for dir in ./dist/*/
           do

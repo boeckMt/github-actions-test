@@ -1,34 +1,7 @@
 import * as FS from 'fs';
-const path = './dist/test-lib/package.json';
-const path2 = './dist/test-lib2/package.json';
-const path3 = './dist/test-lib3/package.json';
-module.exports = ({ github, context }) => {
+module.exports = ({ github, context }, path:string, fn: (jsonObj:any)=> void) => {
   updateJson(path, (jsonObj) => {
-    jsonObj.scripts = {
-      "testexit": "node --eval \"console.log('test script should not exit process.\\n')\""
-    };
-    return jsonObj;
-  });
-
-  updateJson(path2, (jsonObj) => {
-    /* jsonObj.scripts = {
-      "testexit": "node --eval \"console.error('ERROR: exit not working with && ??.\\n')\" && exit 1"
-    }; */
-    jsonObj.scripts = {
-      "testexit": "node --eval \"console.log('test script should not exit process.\\n')\""
-    };
-    return jsonObj;
-  });
-
-
-  updateJson(path3, (jsonObj) => {
-    /* jsonObj.scripts = {
-      "testexit": "node --eval \"console.log('test script should not be executed.\\n')\""
-    }; */
-    jsonObj.scripts = {
-      "testexit": "node --eval \"console.log('test script should not exit process.\\n')\""
-    };
-    return jsonObj;
+    return fn(jsonObj);
   });
 }
 

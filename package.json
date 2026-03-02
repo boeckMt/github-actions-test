@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:all": "ng build test-lib --configuration=production && ng build test-lib2 --configuration=production && ng build test-lib3 --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "build:scripts": "tsc -p scripts/tsconfig.json"

@@ -19,9 +19,7 @@ jobs:
             node-version: 24
         - run: rm -f .npmrc
         - run: npm ci
-        - run: ng build test-lib --configuration=production
-        - run: ng build test-lib2 --configuration=production
-        - run: ng build test-lib3 --configuration=production
+        - run: npm run build:all
         - run: |
               for dir in ./dist/*/
               do

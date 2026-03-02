@@ -21,9 +21,9 @@ runs:
   steps:
     - run: git fetch --prune --all --tags -f
       shell: bash
-    - uses: actions/setup-node@v4
+    - uses: actions/setup-node@v6
       with:
-        node-version: 22
+        node-version: 24
     - run: rm -f .npmrc
       shell: bash
     # https://github.com/actions/runner/issues/665

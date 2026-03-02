@@ -7,17 +7,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
       - run: rm -f .npmrc
       - run: npm ci
       - run: npx ng build test-lib --configuration=production
       - run: npx ng build test-lib2 --configuration=production
       - run: npx ng build test-lib3 --configuration=production
       - name: Github script for package.json
-        uses: actions/github-script@v4
+        uses: actions/github-script@v8
         id: adjust-package
         with:
           script: |
@@ -39,15 +39,15 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Download dist result from job build
         uses: actions/download-artifact@v4
         with:
           name: "dist"
           path: dist
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
       - run: rm -f .npmrc
       - run: npm ci
       - run: |

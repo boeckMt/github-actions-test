@@ -1,0 +1,69 @@
+name: GitHub Packages Test
+on:
+  push:
+    branches-ignore:
+      - "*"
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+-alpha.[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+-beta.[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+-next.[0-9]+"
+
+jobs:
+  build:
+      needs: test
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v6
+        - uses: actions/setup-node@v6
+          with:
+            node-version: 24
+        - run: rm -f .npmrc
+        - run: npm ci
+        - run: ng build test-lib --configuration=production
+        - run: ng build test-lib2 --configuration=production
+        - run: ng build test-lib3 --configuration=production
+        - run: |
+              for dir in ./dist/*/
+              do
+                  dir=${dir%*/}
+                  ls "$dir" -la
+              done
+          # https://docs.github.com/de/actions/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow
+        - name: Archive dist artifacts
+          uses: actions/upload-artifact@v4
+          with:
+            name: "dist"
+            path: dist
+  publish-gpr:
+    needs: [build]
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - name: Download dist result from job build
+        uses: actions/download-artifact@v4
+        with:
+          name: "dist"
+          path: dist
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://npm.pkg.github.com/
+          scope: "boeckMt"
+      - run: npm ci
+      - run: node -v
+      - run: npm -v
+      - run: |
+          echo "file_content<<EOF" >> "$GITHUB_OUTPUT"
+          cat .npmrc >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+      - run: |
+          for dir in ./dist/*/
+          do
+              dir=${dir%*/}
+              npm publish "$dir" --access public --tag "next" --provenance
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

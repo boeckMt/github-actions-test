@@ -12,10 +12,10 @@ jobs:
   checkCommits:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         # needs uses: actions/checkout@ is script is required
       - name: Github script
-        uses: actions/github-script@v5
+        uses: actions/github-script@v8
         id: get-tag2
         with:
           script: |
@@ -61,10 +61,10 @@ jobs:
       latesttag: ${{ steps.get-tag.outputs.tag }}
       latesttag2: ${{ steps.get-tag2.outputs.tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         # needs uses: actions/checkout@ is script is required
       - name: Github script
-        uses: actions/github-script@v5
+        uses: actions/github-script@v8
         id: get-tag2
         with:
           script: |

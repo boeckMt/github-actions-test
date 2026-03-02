@@ -20,14 +20,14 @@ jobs:
         run: echo '::set-output name=shellOutput::ffff1'
 
       - name: Set output github-script
-        uses: actions/github-script@v5
+        uses: actions/github-script@v8
         id: testOutput2
         with:
           script: |
             core.setOutput('githubScriptOutput', 'ffff2');
 
       - name: Return output github-script
-        uses: actions/github-script@v5
+        uses: actions/github-script@v8
         id: testOutput3
         with:
           script: |
@@ -48,7 +48,7 @@ jobs:
           echo "${{ toJSON(needs) }}"
 
       - name: log needs github-script
-        uses: actions/github-script@v5
+        uses: actions/github-script@v8
         with:
           script: |
             const _needs = ${{ toJSON(needs) }};
@@ -77,7 +77,7 @@ jobs:
 
       - name: Set Var github-script
         id: setVarGithubScript
-        uses: actions/github-script@v5
+        uses: actions/github-script@v8
         with:
           script: |
             console.log('process.env.GITHUB_ENV', process.env.GITHUB_ENV);
@@ -108,7 +108,7 @@ jobs:
           echo "${{ toJSON(env) }}"
 
       - name: log vars github-script
-        uses: actions/github-script@v5
+        uses: actions/github-script@v8
         with:
           script: |
             const _needs = ${{ toJSON(needs) }};

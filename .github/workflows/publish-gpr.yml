@@ -54,10 +54,6 @@ jobs:
       - run: node -v
       - run: npm -v
       - run: |
-          echo "file_content<<EOF" >> "$GITHUB_OUTPUT"
-          cat .npmrc >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
-      - run: |
           for dir in ./dist/*/
           do
               dir=${dir%*/}

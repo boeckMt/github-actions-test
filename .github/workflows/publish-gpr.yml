@@ -92,7 +92,7 @@ jobs:
               # Write a minimal .npmrc that contains the token
               echo "//npm.pkg.github.com/:_authToken=$NODE_AUTH_TOKEN\n//@boeckmt:registry=https://npm.pkg.github.com" > $dir/.npmrc
          
-              cd "$dir" && npm publish --access public --tag "latest" --provenance
+              cd "$dir" && npm publish --access public --tag "latest"
           done
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

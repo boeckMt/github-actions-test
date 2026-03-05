@@ -45,6 +45,9 @@ importers:
       '@types/jasmine':
         specifier: ~5.1.0
         version: 5.1.15
+      '@types/node':
+        specifier: ^25.3.3
+        version: 25.3.3
       cross-fetch:
         specifier: ^4.1.0
         version: 4.1.0

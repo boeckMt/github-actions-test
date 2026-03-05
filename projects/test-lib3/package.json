@@ -1,6 +1,6 @@
 {
   "name": "@boeckMt/test_lib3",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "peerDependencies": {
     "@angular/common": "^21.2.0",
     "@angular/core": "^21.2.0"

@@ -58,7 +58,7 @@ jobs:
                 return json;
               });
 
-              script({github, context}, path2, (json)=>{
+              script({github, context}, path3, (json)=>{
                 json.publishConfig = publishConfig;
                 return json;
               });

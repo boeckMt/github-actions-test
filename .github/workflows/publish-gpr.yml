@@ -32,7 +32,7 @@ jobs:
               done
           env:
             NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-            
+
           # https://docs.github.com/de/actions/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow
         - name: Github script for package.json
           uses: actions/github-script@v8
@@ -95,7 +95,7 @@ jobs:
           for dir in ./dist/*/;
           do
               dir=${dir%*/}
-              cd "$dir" && npm publish --access public --tag "latest"
+              npm publish "$dir" --access public --tag "latest"
           done
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

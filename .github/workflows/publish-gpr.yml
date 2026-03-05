@@ -51,7 +51,7 @@ jobs:
         with:
           node-version: 24
           registry-url: https://npm.pkg.github.com/
-          scope: "boeckMt"
+          scope: "@boeckmt"
       - run: npm ci
       - run: node -v
       - run: npm -v
@@ -67,7 +67,7 @@ jobs:
             const path3 = './dist/test-lib3/package.json';
 
             const publishConfig = {
-              "boeckMt:registry": "https://npm.pkg.github.com"
+              "@boeckmt:registry": "https://npm.pkg.github.com"
             };
 
             script({github, context}, path, (json)=>{
@@ -90,9 +90,12 @@ jobs:
               dir=${dir%*/}
 
               # Write a minimal .npmrc that contains the token
-              echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}\n@boeckMt:registry=https://npm.pkg.github.com" > $dir/.npmrc
+              cat > "$dir/.npmrc" << EOF
+              @boeckmt:registry=https://npm.pkg.github.com
+              //npm.pkg.github.com/:_authToken=\${NODE_AUTH_TOKEN}
+              EOF
 
-              npm publish "$dir" --access public --tag "latest" --provenance
+              cd "$dir" && npm publish "$dir" --access public --tag "latest"
           done
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}

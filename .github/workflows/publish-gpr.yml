@@ -24,9 +24,44 @@ jobs:
               for dir in ./dist/*/
               do
                   dir=${dir%*/}
+
+                  # Write a minimal .npmrc that contains the token
+                  echo "//npm.pkg.github.com/:_authToken=$NODE_AUTH_TOKEN\n//@boeckMt:registry=https://npm.pkg.github.com" > $dir/.npmrc
+
                   ls "$dir" -la
               done
+          env:
+            NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+            
           # https://docs.github.com/de/actions/writing-workflows/choosing-what-your-workflow-does/storing-and-sharing-data-from-a-workflow
+        - name: Github script for package.json
+          uses: actions/github-script@v8
+          id: adjust-package
+          with:
+            script: |
+              const script = require('./scripts/adjust-package-json.js');
+              const path = './dist/test-lib/package.json';
+              const path2 = './dist/test-lib2/package.json';
+              const path3 = './dist/test-lib3/package.json';
+
+              const publishConfig = {
+                "@boeckMt:registry": "https://npm.pkg.github.com"
+              };
+
+              script({github, context}, path, (json)=>{
+                json.publishConfig = publishConfig;
+                return json;
+              });
+
+              script({github, context}, path2, (json)=>{
+                json.publishConfig = publishConfig;
+                return json;
+              });
+
+              script({github, context}, path2, (json)=>{
+                json.publishConfig = publishConfig;
+                return json;
+              });
         - name: Archive dist artifacts
           uses: actions/upload-artifact@v4
           with:
@@ -56,42 +91,10 @@ jobs:
       - run: node -v
       - run: npm -v
       # npm publish "$dir" --access public --tag "next" --provenance
-      - name: Github script for package.json
-        uses: actions/github-script@v8
-        id: adjust-package
-        with:
-          script: |
-            const script = require('./scripts/adjust-package-json.js');
-            const path = './dist/test-lib/package.json';
-            const path2 = './dist/test-lib2/package.json';
-            const path3 = './dist/test-lib3/package.json';
-
-            const publishConfig = {
-              "@boeckMt:registry": "https://npm.pkg.github.com"
-            };
-
-            script({github, context}, path, (json)=>{
-              json.publishConfig = publishConfig;
-              return json;
-            });
-
-            script({github, context}, path2, (json)=>{
-              json.publishConfig = publishConfig;
-              return json;
-            });
-
-            script({github, context}, path2, (json)=>{
-              json.publishConfig = publishConfig;
-              return json;
-            });
       - run: |
           for dir in ./dist/*/;
           do
               dir=${dir%*/}
-
-              # Write a minimal .npmrc that contains the token
-              echo "//npm.pkg.github.com/:_authToken=$NODE_AUTH_TOKEN\n//@boeckMt:registry=https://npm.pkg.github.com" > $dir/.npmrc
-         
               cd "$dir" && npm publish --access public --tag "latest"
           done
         env:

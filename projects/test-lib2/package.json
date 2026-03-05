@@ -1,5 +1,5 @@
 {
-  "name": "@boeckmt/test-lib2",
+  "name": "@boeckMt/test-lib2",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^21.2.0",

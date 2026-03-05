@@ -90,12 +90,9 @@ jobs:
               dir=${dir%*/}
 
               # Write a minimal .npmrc that contains the token
-              cat > "$dir/.npmrc" << EOF
-              @boeckmt:registry=https://npm.pkg.github.com
-              //npm.pkg.github.com/:_authToken=\${NODE_AUTH_TOKEN}
-              EOF
-
-              cd "$dir" && npm publish "$dir" --access public --tag "latest"
+              echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}\n//@boeckmt:registry=https://npm.pkg.github.com" > $dir/.npmrc
+         
+              cd "$dir" && npm publish --access public --tag "latest" --provenance
           done
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
